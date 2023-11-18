@@ -1,24 +1,24 @@
 ﻿using Metaheuristic_system.Entities;
+using Metaheuristic_system.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Metaheuristic_system.Controllers
 {
     [Route("api/algorithm")]
+    [ApiController]
     public class AlgorithmController : ControllerBase
     {
-        private readonly AlgorithmDbContext dbContext;
+        private readonly IAlgorithmService algorithmService;
 
-        public AlgorithmController(AlgorithmDbContext dbContext)
+        public AlgorithmController(IAlgorithmService algorithmService)
         {
-            this.dbContext = dbContext;
+            this.algorithmService = algorithmService;
         }
 
         [HttpGet]
         public ActionResult Get()
         {
-            var algorithms = dbContext.Algorithms.ToList();
-
-            return Ok(algorithms);
+            return Ok();
         }
     }
 }
