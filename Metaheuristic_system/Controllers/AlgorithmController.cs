@@ -16,9 +16,11 @@ namespace Metaheuristic_system.Controllers
         }
 
         [HttpGet]
-        public ActionResult Get()
+        public ActionResult GetAll()
         {
-            return Ok();
+            var algorithms = algorithmService.GetAll();
+            return Ok(algorithms);
         }
+
     }
 }

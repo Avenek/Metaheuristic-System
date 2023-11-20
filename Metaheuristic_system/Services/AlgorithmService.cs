@@ -20,7 +20,8 @@ namespace Metaheuristic_system.Services
 
         public IEnumerable<AlgorithmDto> GetAll()
         {
-            throw new NotImplementedException();
+            var algorithms = dbContext.Algorithms.Select(a => new AlgorithmDto {Name = a.Name, FileName = a.FileName }).ToList();
+            return algorithms;
         }
 
         public AlgorithmDto GetById(int id)
