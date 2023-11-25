@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "K8hJhnbdLqwrhxy1JxDQ9FtjgIKVNA4fGgbS1kmGVH/XdYxaWiZuDTA+0NXDf8oYkqGdGOKmS7/1erlkaqqvQw==",
+  "dgSpecHash": "jpOFwl9wJxsaEvJS6foIuFPlcDg1yVXZ4rqi80Dz8oes3/EKb3bxvo6l5TwmJj7MbBf9YGIAWhRgjd99mgfeDw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Jakub\\Desktop\\Programowanie\\Metaheuristic_system\\Metaheuristic_system\\Metaheuristic_system.csproj",
+  "projectFilePath": "C:\\Users\\Jakub\\Desktop\\Programowanie\\Metaheuristic_System\\Metaheuristic_system\\Metaheuristic_system.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Jakub\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "C:\\Users\\Jakub\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",
