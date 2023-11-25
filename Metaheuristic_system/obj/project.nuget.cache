@@ -1,10 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "nMQPJ4A28da4SHj8wvPNnJq27Xg0s6LwzkKyIQTEr92ZeipGeYUPaXb9v6hrC9qO/ST5K5G+R93vYAn948pcXw==",
+  "dgSpecHash": "K8hJhnbdLqwrhxy1JxDQ9FtjgIKVNA4fGgbS1kmGVH/XdYxaWiZuDTA+0NXDf8oYkqGdGOKmS7/1erlkaqqvQw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Jakub\\OneDrive\\Desktop\\C#\\Metaheuristic-System\\Metaheuristic_system\\Metaheuristic_system.csproj",
+  "projectFilePath": "C:\\Users\\Jakub\\Desktop\\Programowanie\\Metaheuristic_system\\Metaheuristic_system\\Metaheuristic_system.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\Jakub\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
+    "C:\\Users\\Jakub\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",
     "C:\\Users\\Jakub\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
+    "C:\\Users\\Jakub\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
     "C:\\Users\\Jakub\\.nuget\\packages\\microsoft.entityframeworkcore\\7.0.2\\microsoft.entityframeworkcore.7.0.2.nupkg.sha512",
     "C:\\Users\\Jakub\\.nuget\\packages\\microsoft.entityframeworkcore.abstractions\\7.0.2\\microsoft.entityframeworkcore.abstractions.7.0.2.nupkg.sha512",
     "C:\\Users\\Jakub\\.nuget\\packages\\microsoft.entityframeworkcore.analyzers\\7.0.2\\microsoft.entityframeworkcore.analyzers.7.0.2.nupkg.sha512",

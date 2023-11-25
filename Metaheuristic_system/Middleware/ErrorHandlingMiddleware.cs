@@ -1,4 +1,6 @@
 ﻿
+using Metaheuristic_system.Exceptions;
+
 namespace Metaheuristic_system.Middleware
 {
     public class ErrorHandlingMiddleware : IMiddleware
@@ -14,6 +16,30 @@ namespace Metaheuristic_system.Middleware
             try
             {
                 await next.Invoke(context);
+            }
+            catch(NotFoundException e)
+            {
+                logger.LogError(e, e.Message);
+                context.Response.StatusCode = 404;
+                await context.Response.WriteAsync(e.Message);
+            }
+            catch(TooLongNameException e)
+            {
+                logger.LogError(e, e.Message);
+                context.Response.StatusCode = 400;
+                await context.Response.WriteAsync(e.Message);
+            }
+            catch(IsNotRemoveableException e)
+            {
+                logger.LogError(e, e.Message);
+                context.Response.StatusCode = 400;
+                await context.Response.WriteAsync(e.Message);
+            }
+            catch (NegativeDimension e)
+            {
+                logger.LogError(e, e.Message);
+                context.Response.StatusCode = 400;
+                await context.Response.WriteAsync(e.Message);
             }
             catch (Exception e)
             {

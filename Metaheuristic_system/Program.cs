@@ -1,5 +1,7 @@
 using Metaheuristic_system.Entities;
+using Metaheuristic_system.MappingProfiles;
 using Metaheuristic_system.Middleware;
+using Metaheuristic_system.Seeders;
 using Metaheuristic_system.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -22,14 +24,20 @@ namespace Metaheuristic_system
                 options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
             });
             builder.Services.AddScoped<AlgorithmSeeder>();
+            builder.Services.AddScoped<FitnessFunctionSeeder>();
             builder.Services.AddScoped<ErrorHandlingMiddleware>();
             builder.Services.AddScoped<IAlgorithmService, AlgorithmService>();
+            builder.Services.AddScoped<IFitnessFunctionService, FitnessFunctionService>();
+            builder.Services.AddAutoMapper(typeof(FitnessFunctionMappingProfile));
+            builder.Services.AddAutoMapper(typeof(AlgorithmMappingProfile));
 
-            
             var app = builder.Build();
-            var scope = app.Services.CreateScope();
-            var seeder = scope.ServiceProvider.GetRequiredService<AlgorithmSeeder>();
-            seeder.Seed();
+            var algortihmScope = app.Services.CreateScope();
+            var algorithmSeeder = algortihmScope.ServiceProvider.GetRequiredService<AlgorithmSeeder>();
+            algorithmSeeder.Seed();
+            var fitnessFunctionScope = app.Services.CreateScope();
+            var fitnessFunctionSeeder = fitnessFunctionScope.ServiceProvider.GetRequiredService<FitnessFunctionSeeder>();
+            fitnessFunctionSeeder.Seed();
             app.UseMiddleware<ErrorHandlingMiddleware>();
             app.UseHttpsRedirection();
 

@@ -1,6 +1,6 @@
 ﻿using Metaheuristic_system.Entities;
 
-namespace Metaheuristic_system
+namespace Metaheuristic_system.Seeders
 {
     public class AlgorithmSeeder
     {

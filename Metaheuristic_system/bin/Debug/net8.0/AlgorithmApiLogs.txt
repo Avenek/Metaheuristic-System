@@ -1,0 +1,90 @@
+2023-11-25 17:42:16.9107 Info Registered target NLog.Targets.FileTarget(Name=allfile)
+2023-11-25 17:42:16.9107 Info Registered target NLog.Targets.FileTarget(Name=exceptions)
+2023-11-25 17:42:16.9240 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.2.5.2160. Product version: 5.2.5+7c014325443d65541200b698a50b9dd4ec30c7f0. GlobalAssemblyCache: False
+2023-11-25 17:42:16.9240 Info Validating config: TargetNames=allfile, exceptions, ConfigItems=36, FilePath=C:\Users\Jakub\Desktop\Programowanie\Metaheuristic_system\Metaheuristic_system\bin\Debug\net7.0\NLog.config
+2023-11-25 17:42:16.9240 Info Configuration initialized.
+2023-11-25 17:42:16.9240 Info Validating config: TargetNames=allfile, exceptions, ConfigItems=36, FilePath=C:\Users\Jakub\Desktop\Programowanie\Metaheuristic_system\Metaheuristic_system\bin\Debug\net7.0\NLog.config
+2023-11-25 17:43:04.0901 Info Registered target NLog.Targets.FileTarget(Name=allfile)
+2023-11-25 17:43:04.0959 Info Registered target NLog.Targets.FileTarget(Name=exceptions)
+2023-11-25 17:43:04.0959 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.2.5.2160. Product version: 5.2.5+7c014325443d65541200b698a50b9dd4ec30c7f0. GlobalAssemblyCache: False
+2023-11-25 17:43:04.0959 Info Validating config: TargetNames=allfile, exceptions, ConfigItems=36, FilePath=C:\Users\Jakub\Desktop\Programowanie\Metaheuristic_system\Metaheuristic_system\bin\Debug\net7.0\NLog.config
+2023-11-25 17:43:04.1129 Info Configuration initialized.
+2023-11-25 17:43:04.1129 Info Validating config: TargetNames=allfile, exceptions, ConfigItems=36, FilePath=C:\Users\Jakub\Desktop\Programowanie\Metaheuristic_system\Metaheuristic_system\bin\Debug\net7.0\NLog.config
+2023-11-25 17:59:11.9046 Info Registered target NLog.Targets.FileTarget(Name=allfile)
+2023-11-25 17:59:11.9103 Info Registered target NLog.Targets.FileTarget(Name=exceptions)
+2023-11-25 17:59:11.9103 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.2.5.2160. Product version: 5.2.5+7c014325443d65541200b698a50b9dd4ec30c7f0. GlobalAssemblyCache: False
+2023-11-25 17:59:11.9103 Info Validating config: TargetNames=allfile, exceptions, ConfigItems=36, FilePath=C:\Users\Jakub\Desktop\Programowanie\Metaheuristic_system\Metaheuristic_system\bin\Debug\net7.0\NLog.config
+2023-11-25 17:59:11.9264 Info Configuration initialized.
+2023-11-25 17:59:11.9264 Info Validating config: TargetNames=allfile, exceptions, ConfigItems=36, FilePath=C:\Users\Jakub\Desktop\Programowanie\Metaheuristic_system\Metaheuristic_system\bin\Debug\net7.0\NLog.config
+2023-11-25 18:01:35.2170 Info Registered target NLog.Targets.FileTarget(Name=allfile)
+2023-11-25 18:01:35.2228 Info Registered target NLog.Targets.FileTarget(Name=exceptions)
+2023-11-25 18:01:35.2228 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.2.5.2160. Product version: 5.2.5+7c014325443d65541200b698a50b9dd4ec30c7f0. GlobalAssemblyCache: False
+2023-11-25 18:01:35.2349 Info Validating config: TargetNames=allfile, exceptions, ConfigItems=36, FilePath=C:\Users\Jakub\Desktop\Programowanie\Metaheuristic_system\Metaheuristic_system\bin\Debug\net7.0\NLog.config
+2023-11-25 18:01:35.2349 Info Configuration initialized.
+2023-11-25 18:01:35.2349 Info Validating config: TargetNames=allfile, exceptions, ConfigItems=36, FilePath=C:\Users\Jakub\Desktop\Programowanie\Metaheuristic_system\Metaheuristic_system\bin\Debug\net7.0\NLog.config
+2023-11-25 18:03:09.4267 Info Registered target NLog.Targets.FileTarget(Name=allfile)
+2023-11-25 18:03:09.4267 Info Registered target NLog.Targets.FileTarget(Name=exceptions)
+2023-11-25 18:03:09.4391 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.2.5.2160. Product version: 5.2.5+7c014325443d65541200b698a50b9dd4ec30c7f0. GlobalAssemblyCache: False
+2023-11-25 18:03:09.4391 Info Validating config: TargetNames=allfile, exceptions, ConfigItems=36, FilePath=C:\Users\Jakub\Desktop\Programowanie\Metaheuristic_system\Metaheuristic_system\bin\Debug\net7.0\NLog.config
+2023-11-25 18:03:09.4391 Info Configuration initialized.
+2023-11-25 18:03:09.4391 Info Validating config: TargetNames=allfile, exceptions, ConfigItems=36, FilePath=C:\Users\Jakub\Desktop\Programowanie\Metaheuristic_system\Metaheuristic_system\bin\Debug\net7.0\NLog.config
+2023-11-25 18:04:45.2872 Info Registered target NLog.Targets.FileTarget(Name=allfile)
+2023-11-25 18:04:45.2872 Info Registered target NLog.Targets.FileTarget(Name=exceptions)
+2023-11-25 18:04:45.2998 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.2.5.2160. Product version: 5.2.5+7c014325443d65541200b698a50b9dd4ec30c7f0. GlobalAssemblyCache: False
+2023-11-25 18:04:45.2998 Info Validating config: TargetNames=allfile, exceptions, ConfigItems=36, FilePath=C:\Users\Jakub\Desktop\Programowanie\Metaheuristic_system\Metaheuristic_system\bin\Debug\net7.0\NLog.config
+2023-11-25 18:04:45.2998 Info Configuration initialized.
+2023-11-25 18:04:45.2998 Info Validating config: TargetNames=allfile, exceptions, ConfigItems=36, FilePath=C:\Users\Jakub\Desktop\Programowanie\Metaheuristic_system\Metaheuristic_system\bin\Debug\net7.0\NLog.config
+2023-11-25 18:09:44.8890 Info Registered target NLog.Targets.FileTarget(Name=allfile)
+2023-11-25 18:09:44.8954 Info Registered target NLog.Targets.FileTarget(Name=exceptions)
+2023-11-25 18:09:44.8954 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.2.5.2160. Product version: 5.2.5+7c014325443d65541200b698a50b9dd4ec30c7f0. GlobalAssemblyCache: False
+2023-11-25 18:09:44.8954 Info Validating config: TargetNames=allfile, exceptions, ConfigItems=36, FilePath=C:\Users\Jakub\Desktop\Programowanie\Metaheuristic_system\Metaheuristic_system\bin\Debug\net7.0\NLog.config
+2023-11-25 18:09:44.9113 Info Configuration initialized.
+2023-11-25 18:09:44.9113 Info Validating config: TargetNames=allfile, exceptions, ConfigItems=36, FilePath=C:\Users\Jakub\Desktop\Programowanie\Metaheuristic_system\Metaheuristic_system\bin\Debug\net7.0\NLog.config
+2023-11-25 18:11:38.6257 Info Registered target NLog.Targets.FileTarget(Name=allfile)
+2023-11-25 18:11:38.6257 Info Registered target NLog.Targets.FileTarget(Name=exceptions)
+2023-11-25 18:11:38.6257 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.2.5.2160. Product version: 5.2.5+7c014325443d65541200b698a50b9dd4ec30c7f0. GlobalAssemblyCache: False
+2023-11-25 18:11:38.6425 Info Validating config: TargetNames=allfile, exceptions, ConfigItems=36, FilePath=C:\Users\Jakub\Desktop\Programowanie\Metaheuristic_system\Metaheuristic_system\bin\Debug\net7.0\NLog.config
+2023-11-25 18:11:38.6425 Info Configuration initialized.
+2023-11-25 18:11:38.6425 Info Validating config: TargetNames=allfile, exceptions, ConfigItems=36, FilePath=C:\Users\Jakub\Desktop\Programowanie\Metaheuristic_system\Metaheuristic_system\bin\Debug\net7.0\NLog.config
+2023-11-25 18:12:59.0751 Info Registered target NLog.Targets.FileTarget(Name=allfile)
+2023-11-25 18:12:59.0817 Info Registered target NLog.Targets.FileTarget(Name=exceptions)
+2023-11-25 18:12:59.0817 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.2.5.2160. Product version: 5.2.5+7c014325443d65541200b698a50b9dd4ec30c7f0. GlobalAssemblyCache: False
+2023-11-25 18:12:59.0817 Info Validating config: TargetNames=allfile, exceptions, ConfigItems=36, FilePath=C:\Users\Jakub\Desktop\Programowanie\Metaheuristic_system\Metaheuristic_system\bin\Debug\net7.0\NLog.config
+2023-11-25 18:12:59.0980 Info Configuration initialized.
+2023-11-25 18:12:59.0980 Info Validating config: TargetNames=allfile, exceptions, ConfigItems=36, FilePath=C:\Users\Jakub\Desktop\Programowanie\Metaheuristic_system\Metaheuristic_system\bin\Debug\net7.0\NLog.config
+2023-11-25 18:14:56.4697 Info Registered target NLog.Targets.FileTarget(Name=allfile)
+2023-11-25 18:14:56.4697 Info Registered target NLog.Targets.FileTarget(Name=exceptions)
+2023-11-25 18:14:56.4697 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.2.5.2160. Product version: 5.2.5+7c014325443d65541200b698a50b9dd4ec30c7f0. GlobalAssemblyCache: False
+2023-11-25 18:14:56.4864 Info Validating config: TargetNames=allfile, exceptions, ConfigItems=36, FilePath=C:\Users\Jakub\Desktop\Programowanie\Metaheuristic_system\Metaheuristic_system\bin\Debug\net7.0\NLog.config
+2023-11-25 18:14:56.4864 Info Configuration initialized.
+2023-11-25 18:14:56.4864 Info Validating config: TargetNames=allfile, exceptions, ConfigItems=36, FilePath=C:\Users\Jakub\Desktop\Programowanie\Metaheuristic_system\Metaheuristic_system\bin\Debug\net7.0\NLog.config
+2023-11-25 18:15:25.0905 Info Registered target NLog.Targets.FileTarget(Name=allfile)
+2023-11-25 18:15:25.0969 Info Registered target NLog.Targets.FileTarget(Name=exceptions)
+2023-11-25 18:15:25.0969 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.2.5.2160. Product version: 5.2.5+7c014325443d65541200b698a50b9dd4ec30c7f0. GlobalAssemblyCache: False
+2023-11-25 18:15:25.0969 Info Validating config: TargetNames=allfile, exceptions, ConfigItems=36, FilePath=C:\Users\Jakub\Desktop\Programowanie\Metaheuristic_system\Metaheuristic_system\bin\Debug\net7.0\NLog.config
+2023-11-25 18:15:25.1132 Info Configuration initialized.
+2023-11-25 18:15:25.1132 Info Validating config: TargetNames=allfile, exceptions, ConfigItems=36, FilePath=C:\Users\Jakub\Desktop\Programowanie\Metaheuristic_system\Metaheuristic_system\bin\Debug\net7.0\NLog.config
+2023-11-25 22:13:35.4110 Info Registered target NLog.Targets.FileTarget(Name=allfile)
+2023-11-25 22:13:35.4110 Info Registered target NLog.Targets.FileTarget(Name=exceptions)
+2023-11-25 22:13:35.4110 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.2.5.2160. Product version: 5.2.5+7c014325443d65541200b698a50b9dd4ec30c7f0. GlobalAssemblyCache: False
+2023-11-25 22:13:35.4280 Info Validating config: TargetNames=allfile, exceptions, ConfigItems=36, FilePath=C:\Users\Jakub\Desktop\Programowanie\Metaheuristic_system\Metaheuristic_system\bin\Debug\net7.0\NLog.config
+2023-11-25 22:13:35.4280 Info Configuration initialized.
+2023-11-25 22:13:35.4280 Info Validating config: TargetNames=allfile, exceptions, ConfigItems=36, FilePath=C:\Users\Jakub\Desktop\Programowanie\Metaheuristic_system\Metaheuristic_system\bin\Debug\net7.0\NLog.config
+2023-11-25 22:18:20.8453 Info Registered target NLog.Targets.FileTarget(Name=allfile)
+2023-11-25 22:18:20.8517 Info Registered target NLog.Targets.FileTarget(Name=exceptions)
+2023-11-25 22:18:20.8517 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.2.5.2160. Product version: 5.2.5+7c014325443d65541200b698a50b9dd4ec30c7f0. GlobalAssemblyCache: False
+2023-11-25 22:18:20.8517 Info Validating config: TargetNames=allfile, exceptions, ConfigItems=36, FilePath=C:\Users\Jakub\Desktop\Programowanie\Metaheuristic_system\Metaheuristic_system\bin\Debug\net7.0\NLog.config
+2023-11-25 22:18:20.8685 Info Configuration initialized.
+2023-11-25 22:18:20.8685 Info Validating config: TargetNames=allfile, exceptions, ConfigItems=36, FilePath=C:\Users\Jakub\Desktop\Programowanie\Metaheuristic_system\Metaheuristic_system\bin\Debug\net7.0\NLog.config
+2023-11-25 22:19:28.7284 Info Registered target NLog.Targets.FileTarget(Name=allfile)
+2023-11-25 22:19:28.7284 Info Registered target NLog.Targets.FileTarget(Name=exceptions)
+2023-11-25 22:19:28.7407 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.2.5.2160. Product version: 5.2.5+7c014325443d65541200b698a50b9dd4ec30c7f0. GlobalAssemblyCache: False
+2023-11-25 22:19:28.7407 Info Validating config: TargetNames=allfile, exceptions, ConfigItems=36, FilePath=C:\Users\Jakub\Desktop\Programowanie\Metaheuristic_system\Metaheuristic_system\bin\Debug\net7.0\NLog.config
+2023-11-25 22:19:28.7407 Info Configuration initialized.
+2023-11-25 22:19:28.7407 Info Validating config: TargetNames=allfile, exceptions, ConfigItems=36, FilePath=C:\Users\Jakub\Desktop\Programowanie\Metaheuristic_system\Metaheuristic_system\bin\Debug\net7.0\NLog.config
+2023-11-25 22:37:01.0484 Info Registered target NLog.Targets.FileTarget(Name=allfile)
+2023-11-25 22:37:01.0552 Info Registered target NLog.Targets.FileTarget(Name=exceptions)
+2023-11-25 22:37:01.0552 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.2.5.2160. Product version: 5.2.5+7c014325443d65541200b698a50b9dd4ec30c7f0. GlobalAssemblyCache: False
+2023-11-25 22:37:01.0676 Info Validating config: TargetNames=allfile, exceptions, ConfigItems=36, FilePath=C:\Users\Jakub\Desktop\Programowanie\Metaheuristic_system\Metaheuristic_system\bin\Debug\net7.0\NLog.config
+2023-11-25 22:37:01.0676 Info Configuration initialized.
+2023-11-25 22:37:01.0676 Info Validating config: TargetNames=allfile, exceptions, ConfigItems=36, FilePath=C:\Users\Jakub\Desktop\Programowanie\Metaheuristic_system\Metaheuristic_system\bin\Debug\net7.0\NLog.config
