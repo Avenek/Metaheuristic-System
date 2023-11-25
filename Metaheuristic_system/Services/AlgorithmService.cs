@@ -12,7 +12,7 @@ namespace Metaheuristic_system.Services
         AlgorithmDto GetById(int id);
         void UpdateNameById(int id, string newName);
         void DeleteById(int id);
-        void AddAlgorithm(AlgorithmDto newAlgorithmDto)
+        int AddAlgorithm(AlgorithmDto newAlgorithmDto);
     }
 
     public class AlgorithmService : IAlgorithmService
@@ -76,7 +76,7 @@ namespace Metaheuristic_system.Services
             dbContext.SaveChanges();
         }
 
-        public void AddAlgorithm(AlgorithmDto newAlgorithmDto)
+        public int AddAlgorithm(AlgorithmDto newAlgorithmDto)
         {
             if(newAlgorithmDto.Name.Length > 30)
             {
@@ -89,6 +89,8 @@ namespace Metaheuristic_system.Services
             var algorithm = mapper.Map<Algorithm>(newAlgorithmDto);
             dbContext.Algorithms.Add(algorithm);
             dbContext.SaveChanges();
+
+            return algorithm.Id;
         }
 
 

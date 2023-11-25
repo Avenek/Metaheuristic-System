@@ -12,7 +12,7 @@ namespace Metaheuristic_system.Services
         FitnessFunctionDto GetById(int id);
         void UpdateNameById(int id, string newName);
         void DeleteById(int id);
-        void UpdateDomainAndDimensionById(int id, DimensionAndDomainDto updatedFunction)
+        void UpdateDomainAndDimensionById(int id, DimensionAndDomainDto updatedFunction);
     }
 
     public class FitnessFunctionService : IFitnessFunctionService
