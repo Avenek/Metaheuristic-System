@@ -41,7 +41,7 @@ namespace Metaheuristic_system.Controllers
             return NoContent();
         }
 
-        [HttpPut]
+        [HttpPost]
         public ActionResult AddAlgorithm([FromBody] AlgorithmDto newAlgorithmDto)
         {
             int id = algorithmService.AddAlgorithm(newAlgorithmDto);

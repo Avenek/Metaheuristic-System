@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "jpOFwl9wJxsaEvJS6foIuFPlcDg1yVXZ4rqi80Dz8oes3/EKb3bxvo6l5TwmJj7MbBf9YGIAWhRgjd99mgfeDw==",
+  "dgSpecHash": "geYgIuaYp2COiHtU3fiWph2poBUp68oKb3XmNyfj+NYgQLr/GeayMPjNQSUEsbnpAc8M1IVBHSQOlds7JhJF+g==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Jakub\\Desktop\\Programowanie\\Metaheuristic_System\\Metaheuristic_system\\Metaheuristic_system.csproj",
+  "projectFilePath": "C:\\Users\\Jakub\\Desktop\\Programowanie\\Metaheuristic_system\\Metaheuristic_system\\Metaheuristic_system.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Jakub\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "C:\\Users\\Jakub\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",
@@ -24,6 +24,7 @@
     "C:\\Users\\Jakub\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\7.0.0\\microsoft.extensions.logging.abstractions.7.0.0.nupkg.sha512",
     "C:\\Users\\Jakub\\.nuget\\packages\\microsoft.extensions.options\\7.0.0\\microsoft.extensions.options.7.0.0.nupkg.sha512",
     "C:\\Users\\Jakub\\.nuget\\packages\\microsoft.extensions.primitives\\7.0.0\\microsoft.extensions.primitives.7.0.0.nupkg.sha512",
+    "C:\\Users\\Jakub\\.nuget\\packages\\microsoft.visualstudio.azure.containers.tools.targets\\1.17.2\\microsoft.visualstudio.azure.containers.tools.targets.1.17.2.nupkg.sha512",
     "C:\\Users\\Jakub\\.nuget\\packages\\mono.texttemplating\\2.2.1\\mono.texttemplating.2.2.1.nupkg.sha512",
     "C:\\Users\\Jakub\\.nuget\\packages\\mysqlconnector\\2.2.5\\mysqlconnector.2.2.5.nupkg.sha512",
     "C:\\Users\\Jakub\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512",

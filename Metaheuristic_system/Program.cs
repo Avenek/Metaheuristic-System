@@ -3,6 +3,7 @@ using Metaheuristic_system.MappingProfiles;
 using Metaheuristic_system.Middleware;
 using Metaheuristic_system.Seeders;
 using Metaheuristic_system.Services;
+using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using NLog.Web;
@@ -30,8 +31,17 @@ namespace Metaheuristic_system
             builder.Services.AddScoped<IFitnessFunctionService, FitnessFunctionService>();
             builder.Services.AddAutoMapper(typeof(FitnessFunctionMappingProfile));
             builder.Services.AddAutoMapper(typeof(AlgorithmMappingProfile));
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("FrontEndClient", b =>
+                    b.AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .WithOrigins(builder.Configuration["AllowedOrigins"])
+                );
+            });
 
             var app = builder.Build();
+            app.UseCors("FrontEndClient");
             var algortihmScope = app.Services.CreateScope();
             var algorithmSeeder = algortihmScope.ServiceProvider.GetRequiredService<AlgorithmSeeder>();
             algorithmSeeder.Seed();
