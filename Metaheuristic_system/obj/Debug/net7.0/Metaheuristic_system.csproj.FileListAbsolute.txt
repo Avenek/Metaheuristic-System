@@ -84,3 +84,5 @@ C:\Users\Jakub\Desktop\Programowanie\Metaheuristic_system\Metaheuristic_system\o
 C:\Users\Jakub\Desktop\Programowanie\Metaheuristic_system\Metaheuristic_system\obj\Debug\net7.0\Metaheuristic_system.pdb
 C:\Users\Jakub\Desktop\Programowanie\Metaheuristic_system\Metaheuristic_system\obj\Debug\net7.0\Metaheuristic_system.genruntimeconfig.cache
 C:\Users\Jakub\Desktop\Programowanie\Metaheuristic_system\Metaheuristic_system\obj\Debug\net7.0\ref\Metaheuristic_system.dll
+C:\Users\Jakub\OneDrive\Desktop\C#\Metaheuristic-System\Metaheuristic_system\bin\Debug\net7.0\AutoMapper.dll
+C:\Users\Jakub\OneDrive\Desktop\C#\Metaheuristic-System\Metaheuristic_system\bin\Debug\net7.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll

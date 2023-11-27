@@ -50,6 +50,13 @@ namespace Metaheuristic_system.Controllers
             fitnessFunctionService.UpdateDomainAndDimensionById(id, functionParams);
             return Ok();
         }
+
+        [HttpPost]
+        public ActionResult AddFitnessFunction([FromBody] FitnessFunctionDto newFitnessFunctionDto, [FromForm] IFormFile file)
+        {
+            int id = fitnessFunctionService.AddFitnessFunction(newFitnessFunctionDto, file);
+            return Created($"/api/fitnessFunction/{id}", null);
+        }
     }
 }
 

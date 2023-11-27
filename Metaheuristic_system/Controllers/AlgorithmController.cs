@@ -42,9 +42,9 @@ namespace Metaheuristic_system.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddAlgorithm([FromBody] AlgorithmDto newAlgorithmDto)
+        public ActionResult AddAlgorithm([FromBody] AlgorithmDto newAlgorithmDto, [FromForm] IFormFile file)
         {
-            int id = algorithmService.AddAlgorithm(newAlgorithmDto);
+            int id = algorithmService.AddAlgorithm(newAlgorithmDto, file);
             return Created($"/api/algorithm/{id}", null);
         }
     }

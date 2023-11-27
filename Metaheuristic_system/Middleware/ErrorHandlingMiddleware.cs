@@ -41,6 +41,18 @@ namespace Metaheuristic_system.Middleware
                 context.Response.StatusCode = 400;
                 await context.Response.WriteAsync(e.Message);
             }
+            catch (BadFileException e)
+            {
+                logger.LogError(e, e.Message);
+                context.Response.StatusCode = 400;
+                await context.Response.WriteAsync(e.Message);
+            }
+            catch (BadFileExtensionException e)
+            {
+                logger.LogError(e, e.Message);
+                context.Response.StatusCode = 400;
+                await context.Response.WriteAsync(e.Message);
+            }
             catch (Exception e)
             {
                 logger.LogError(e, e.Message);

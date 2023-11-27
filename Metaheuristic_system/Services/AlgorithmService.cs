@@ -2,6 +2,7 @@
 using Metaheuristic_system.Entities;
 using Metaheuristic_system.Exceptions;
 using Metaheuristic_system.Models;
+using Microsoft.AspNetCore.Mvc;
 using System.Security.Cryptography;
 
 namespace Metaheuristic_system.Services
@@ -12,7 +13,7 @@ namespace Metaheuristic_system.Services
         AlgorithmDto GetById(int id);
         void UpdateNameById(int id, string newName);
         void DeleteById(int id);
-        int AddAlgorithm(AlgorithmDto newAlgorithmDto);
+        int AddAlgorithm(AlgorithmDto newAlgorithmDto, IFormFile file);
     }
 
     public class AlgorithmService : IAlgorithmService
@@ -72,21 +73,34 @@ namespace Metaheuristic_system.Services
             {
                 throw new IsNotRemoveableException("Algorytmu o podanym id nie można usunąć.");
             }
+            string path = "/dll/algorithm";
+            string fileName = algorithm.FileName;
+            string fullPath = $"{path}/{fileName}";
+            File.Delete(fullPath);
             dbContext.Algorithms.Remove(algorithm);
             dbContext.SaveChanges();
         }
 
-        public int AddAlgorithm(AlgorithmDto newAlgorithmDto)
+        public int AddAlgorithm(AlgorithmDto newAlgorithmDto, IFormFile file)
         {
-            if(newAlgorithmDto.Name.Length > 30)
+            if (newAlgorithmDto.Name.Length > 30) throw new TooLongNameException("Podano zbyt długą nazwę algoryutmu.");
+            if (file.FileName.Length > 30) throw new TooLongNameException("Podano zbyt długą nazwę pliku.");
+            if (file == null || file.Name.Length == 0) throw new BadFileException("Napotkano problemy z plikiem.");
+            if (Path.GetExtension(file.FileName) != "dll") throw new BadFileExtensionException("Plik posiada złe rozszerzenie.");
+
+            string path = "/dll/algorithm";
+            if (!Directory.Exists(path))
             {
-                throw new TooLongNameException("Podano zbyt długą nazwę algoryutmu.");
+                Directory.CreateDirectory(path);
             }
-            if(newAlgorithmDto.FileName.Length > 30)
+            string fileName = file.FileName;
+            string fullPath = $"{path}/{fileName}";
+            using (var stream = new FileStream(fullPath, FileMode.Create))
             {
-                throw new TooLongNameException("Podano zbyt długą nazwę pliku.");
+                file.CopyTo(stream);
             }
             var algorithm = mapper.Map<Algorithm>(newAlgorithmDto);
+            algorithm.FileName = fileName;
             dbContext.Algorithms.Add(algorithm);
             dbContext.SaveChanges();
 

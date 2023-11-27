@@ -9,8 +9,5 @@ namespace Metaheuristic_system.Models
         [Required]
         [MaxLength(30)]
         public string Name { get; set; }
-        [Required]
-        [MaxLength(30)]
-        public string FileName { get; set; }
     }
 }

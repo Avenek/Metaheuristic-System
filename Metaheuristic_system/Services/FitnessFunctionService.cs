@@ -3,6 +3,7 @@ using Metaheuristic_system.Entities;
 using Metaheuristic_system.Exceptions;
 using Metaheuristic_system.Models;
 using Newtonsoft.Json;
+using System.Security.Cryptography;
 
 namespace Metaheuristic_system.Services
 {
@@ -13,6 +14,7 @@ namespace Metaheuristic_system.Services
         void UpdateNameById(int id, string newName);
         void DeleteById(int id);
         void UpdateDomainAndDimensionById(int id, DimensionAndDomainDto updatedFunction);
+        int AddFitnessFunction(FitnessFunctionDto newFitnessFunctionDto, IFormFile file);
     }
 
     public class FitnessFunctionService : IFitnessFunctionService
@@ -68,6 +70,10 @@ namespace Metaheuristic_system.Services
             {
                 throw new IsNotRemoveableException("Funkcji o podanym id nie można usunąć.");
             }
+            string path = "/dll/fitnessFunction";
+            string fileName = fitnessFunction.FileName;
+            string fullPath = $"{path}/{fileName}";
+            File.Delete(fullPath);
             dbContext.FitnessFunctions.Remove(fitnessFunction);
             dbContext.SaveChanges();
         }
@@ -87,6 +93,32 @@ namespace Metaheuristic_system.Services
             string jsonDomain = JsonConvert.SerializeObject(updatedFunction.DomainArray);
             fitnessFunction.Domain = jsonDomain;
             dbContext.SaveChanges();
+        }
+
+        public int AddFitnessFunction(FitnessFunctionDto newFitnessFunctionDto, IFormFile file)
+        {
+            if (newFitnessFunctionDto.Name.Length > 30) throw new TooLongNameException("Podano zbyt długą nazwę funckji testowej.");
+            if (file.FileName.Length > 30) throw new TooLongNameException("Podano zbyt długą nazwę pliku.");
+            if (file == null || file.Name.Length == 0) throw new BadFileException("Napotkano problemy z plikiem.");
+            if (Path.GetExtension(file.FileName) != "dll") throw new BadFileExtensionException("Plik posiada złe rozszerzenie.");
+
+            string path = "/dll/fitnessFunction";
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+            string fileName = file.FileName;
+            string fullPath = $"{path}/{fileName}";
+            using (var stream = new FileStream(fullPath, FileMode.Create))
+            {
+                file.CopyTo(stream);
+            }
+            var fitnessFunction = mapper.Map<FitnessFunction>(newFitnessFunctionDto);
+            fitnessFunction.FileName = fileName;
+            dbContext.FitnessFunctions.Add(fitnessFunction);
+            dbContext.SaveChanges();
+
+            return fitnessFunction.Id;
         }
     }
 }
