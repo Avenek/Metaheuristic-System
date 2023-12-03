@@ -53,6 +53,24 @@ namespace Metaheuristic_system.Middleware
                 context.Response.StatusCode = 400;
                 await context.Response.WriteAsync(e.Message);
             }
+            catch(NotImplementInterfaceException e)
+            {
+                logger.LogError(e, e.Message);
+                context.Response.StatusCode = 400;
+                await context.Response.WriteAsync(e.Message);
+            }
+            catch(FileAlreadyExistException e)
+            {
+                logger.LogError(e, e.Message);
+                context.Response.StatusCode = 400;
+                await context.Response.WriteAsync(e.Message);
+            }
+            catch(MissingFileException e)
+            {
+                logger.LogError(e, e.Message);
+                context.Response.StatusCode = 400;
+                await context.Response.WriteAsync(e.Message);
+            }
             catch (Exception e)
             {
                 logger.LogError(e, e.Message);

@@ -2,7 +2,11 @@
 using Metaheuristic_system.Entities;
 using Metaheuristic_system.Exceptions;
 using Metaheuristic_system.Models;
+using Metaheuristic_system.ReflectionRequiredInterfaces;
+using Metaheuristic_system.Validators;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.Reflection;
 using System.Security.Cryptography;
 
 namespace Metaheuristic_system.Services
@@ -14,7 +18,8 @@ namespace Metaheuristic_system.Services
         void UpdateNameById(int id, string newName);
         void DeleteById(int id);
         void UpdateDomainAndDimensionById(int id, DimensionAndDomainDto updatedFunction);
-        int AddFitnessFunction(FitnessFunctionDto newFitnessFunctionDto, IFormFile file);
+        int AddFitnessFunction(FitnessFunctionDto newFitnessFunctionDto);
+        void UploadFitnessFunctionFile([FromForm] IFormFile file);
     }
 
     public class FitnessFunctionService : IFitnessFunctionService
@@ -95,14 +100,13 @@ namespace Metaheuristic_system.Services
             dbContext.SaveChanges();
         }
 
-        public int AddFitnessFunction(FitnessFunctionDto newFitnessFunctionDto, IFormFile file)
+        public void UploadFitnessFunctionFile(IFormFile file)
         {
-            if (newFitnessFunctionDto.Name.Length > 30) throw new TooLongNameException("Podano zbyt długą nazwę funckji testowej.");
             if (file.FileName.Length > 30) throw new TooLongNameException("Podano zbyt długą nazwę pliku.");
             if (file == null || file.Name.Length == 0) throw new BadFileException("Napotkano problemy z plikiem.");
-            if (Path.GetExtension(file.FileName) != "dll") throw new BadFileExtensionException("Plik posiada złe rozszerzenie.");
+            if (Path.GetExtension(file.FileName) != ".dll") throw new BadFileExtensionException("Plik posiada złe rozszerzenie.");
 
-            string path = "/dll/fitnessFunction";
+            string path = "./dll/fitnessFunction";
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
@@ -113,8 +117,23 @@ namespace Metaheuristic_system.Services
             {
                 file.CopyTo(stream);
             }
+            Assembly assembly = Assembly.LoadFrom(fullPath);
+            var types = assembly.GetTypes();
+            var delegateType = assembly.GetTypes()
+            .FirstOrDefault(type => ReflectionValidator.ImplementsDelegate(type));
+            if (delegateType == null)
+            {
+                File.Delete(fullPath);
+                throw new NotImplementInterfaceException("Zawartość pliku nie posiada wymaganej delegaty.");
+            }
+        }
+
+        public int AddFitnessFunction(FitnessFunctionDto newFitnessFunctionDto)
+        {
+            if(dbContext.FitnessFunctions.FirstOrDefault(f => f.FileName == newFitnessFunctionDto.FileName) == null) throw new TooLongNameException("Nie odnaleziono wymaganego pliku.");
+            if (newFitnessFunctionDto.Name.Length > 30) throw new TooLongNameException("Podano zbyt długą nazwę funckji testowej.");
+
             var fitnessFunction = mapper.Map<FitnessFunction>(newFitnessFunctionDto);
-            fitnessFunction.FileName = fileName;
             dbContext.FitnessFunctions.Add(fitnessFunction);
             dbContext.SaveChanges();
 

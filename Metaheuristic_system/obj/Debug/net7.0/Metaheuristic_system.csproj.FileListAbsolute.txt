@@ -86,3 +86,9 @@ C:\Users\Jakub\Desktop\Programowanie\Metaheuristic_system\Metaheuristic_system\o
 C:\Users\Jakub\Desktop\Programowanie\Metaheuristic_system\Metaheuristic_system\obj\Debug\net7.0\ref\Metaheuristic_system.dll
 C:\Users\Jakub\OneDrive\Desktop\C#\Metaheuristic-System\Metaheuristic_system\bin\Debug\net7.0\AutoMapper.dll
 C:\Users\Jakub\OneDrive\Desktop\C#\Metaheuristic-System\Metaheuristic_system\bin\Debug\net7.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+C:\Users\Jakub\Desktop\Programowanie\Metaheuristic_system\Metaheuristic_system\bin\Debug\net7.0\Microsoft.OpenApi.dll
+C:\Users\Jakub\Desktop\Programowanie\Metaheuristic_system\Metaheuristic_system\bin\Debug\net7.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\Jakub\Desktop\Programowanie\Metaheuristic_system\Metaheuristic_system\bin\Debug\net7.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\Jakub\Desktop\Programowanie\Metaheuristic_system\Metaheuristic_system\bin\Debug\net7.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\Jakub\Desktop\Programowanie\Metaheuristic_system\Metaheuristic_system\obj\Debug\net7.0\Metaheuristic_system.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\Jakub\Desktop\Programowanie\Metaheuristic_system\Metaheuristic_system\bin\Debug\net7.0\appsettings.Production.json

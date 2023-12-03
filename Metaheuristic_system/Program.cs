@@ -39,6 +39,7 @@ namespace Metaheuristic_system
                         .WithOrigins(builder.Configuration["AllowedOrigins"])
                 );
             });
+            builder.Services.AddSwaggerGen();
 
             var app = builder.Build();
             app.UseCors("FrontEndClient");
@@ -49,6 +50,11 @@ namespace Metaheuristic_system
             var fitnessFunctionSeeder = fitnessFunctionScope.ServiceProvider.GetRequiredService<FitnessFunctionSeeder>();
             fitnessFunctionSeeder.Seed();
             app.UseMiddleware<ErrorHandlingMiddleware>();
+            if (app.Environment.IsDevelopment())
+            {
+                app.UseSwagger();
+                app.UseSwaggerUI();
+            }
             app.UseHttpsRedirection();
 
             app.UseAuthorization();

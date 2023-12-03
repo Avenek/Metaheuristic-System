@@ -52,10 +52,16 @@ namespace Metaheuristic_system.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddFitnessFunction([FromBody] FitnessFunctionDto newFitnessFunctionDto, [FromForm] IFormFile file)
+        public ActionResult UploadFitnessFunctionFile([FromForm] IFormFile file)
         {
-            int id = fitnessFunctionService.AddFitnessFunction(newFitnessFunctionDto, file);
-            return Created($"/api/fitnessFunction/{id}", null);
+            fitnessFunctionService.UploadFitnessFunctionFile(file);
+            return Ok();
+        }
+
+        public ActionResult AddFitnessFunction([FromBody] FitnessFunctionDto newFitnessFunctionDto)
+        {
+            fitnessFunctionService.AddFitnessFunction(newFitnessFunctionDto);
+            return Ok();
         }
     }
 }

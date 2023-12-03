@@ -2,8 +2,9 @@
 using Metaheuristic_system.Entities;
 using Metaheuristic_system.Exceptions;
 using Metaheuristic_system.Models;
-using Microsoft.AspNetCore.Mvc;
-using System.Security.Cryptography;
+using Metaheuristic_system.ReflectionRequiredInterfaces;
+using Metaheuristic_system.Validators;
+using System.Reflection;
 
 namespace Metaheuristic_system.Services
 {
@@ -13,7 +14,7 @@ namespace Metaheuristic_system.Services
         AlgorithmDto GetById(int id);
         void UpdateNameById(int id, string newName);
         void DeleteById(int id);
-        int AddAlgorithm(AlgorithmDto newAlgorithmDto, IFormFile file);
+        int AddAlgorithm(string algorithmName, IFormFile file);
     }
 
     public class AlgorithmService : IAlgorithmService
@@ -81,14 +82,14 @@ namespace Metaheuristic_system.Services
             dbContext.SaveChanges();
         }
 
-        public int AddAlgorithm(AlgorithmDto newAlgorithmDto, IFormFile file)
+        public int AddAlgorithm(string algorithmName, IFormFile file)
         {
-            if (newAlgorithmDto.Name.Length > 30) throw new TooLongNameException("Podano zbyt długą nazwę algoryutmu.");
+            if (algorithmName.Length > 30) throw new TooLongNameException("Podano zbyt długą nazwę algoryutmu.");
             if (file.FileName.Length > 30) throw new TooLongNameException("Podano zbyt długą nazwę pliku.");
             if (file == null || file.Name.Length == 0) throw new BadFileException("Napotkano problemy z plikiem.");
-            if (Path.GetExtension(file.FileName) != "dll") throw new BadFileExtensionException("Plik posiada złe rozszerzenie.");
-
-            string path = "/dll/algorithm";
+            if (Path.GetExtension(file.FileName) != ".dll") throw new BadFileExtensionException($"Plik posiada złe rozszerzenie.");
+            if(File.Exists("./dll/algorithm/" + file.FileName)) throw new FileAlreadyExistException("Plik o podanej nazwie już istnieje na serwerze.");
+            string path = "./dll/algorithm";
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
@@ -99,8 +100,16 @@ namespace Metaheuristic_system.Services
             {
                 file.CopyTo(stream);
             }
-            var algorithm = mapper.Map<Algorithm>(newAlgorithmDto);
-            algorithm.FileName = fileName;
+            Assembly assembly = Assembly.LoadFrom(fullPath);
+            var types = assembly.GetTypes();
+            var optimizationType = assembly.GetTypes()
+            .FirstOrDefault(type => type.GetInterfaces().Any(interfaceType => ReflectionValidator.ImplementsInterface(interfaceType, typeof(IOptimizationAlgorithm))));
+            if (optimizationType == null)
+            {
+                File.Delete(fullPath);
+                throw new NotImplementInterfaceException("Zawartość pliku nie implementuje wymaganego interfejsu.");
+            }
+            var algorithm = new Algorithm() { Name = algorithmName, FileName = fileName };
             dbContext.Algorithms.Add(algorithm);
             dbContext.SaveChanges();
 
