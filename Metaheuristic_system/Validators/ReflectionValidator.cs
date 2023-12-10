@@ -6,7 +6,7 @@ namespace Metaheuristic_system.Validators
     {
        public static bool ImplementsInterface(Type targetType, Type interfaceType)
        {
-            if (targetType.Name == "IOptimizationAlgorithm")
+            if (targetType.Name == interfaceType.Name)
             {
                 var interfaceMethods = interfaceType.GetMethods();
                 var interfaceProperties = interfaceType.GetProperties();
@@ -33,16 +33,5 @@ namespace Metaheuristic_system.Validators
             }
             return false;
        }
-
-        public static bool ImplementsDelegate(Type targetType)
-        {
-            MethodInfo[] methods = targetType.GetMethods();
-            if (targetType.IsClass)
-            {
-                return methods.Any(method => method.Name == "CalculateFitnesse" && method.ReturnType.Name == "Double" &&
-                   method.GetParameters().All(param => param.ParameterType.Name == "Double[]"));
-            }
-            return false;
-        }
     }
 }

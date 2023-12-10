@@ -19,7 +19,7 @@ namespace Metaheuristic_system
             builder.Host.UseNLog();
 
             builder.Services.AddControllers();
-            builder.Services.AddDbContext<AlgorithmDbContext>(options =>
+            builder.Services.AddDbContext<SystemDbContext>(options =>
             {
                 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
                 options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
@@ -29,6 +29,7 @@ namespace Metaheuristic_system
             builder.Services.AddScoped<ErrorHandlingMiddleware>();
             builder.Services.AddScoped<IAlgorithmService, AlgorithmService>();
             builder.Services.AddScoped<IFitnessFunctionService, FitnessFunctionService>();
+            builder.Services.AddScoped<ITaskService, TaskService>();
             builder.Services.AddAutoMapper(typeof(FitnessFunctionMappingProfile));
             builder.Services.AddAutoMapper(typeof(AlgorithmMappingProfile));
             builder.Services.AddCors(options =>

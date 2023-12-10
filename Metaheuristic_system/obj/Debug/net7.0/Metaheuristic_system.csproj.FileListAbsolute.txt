@@ -92,3 +92,4 @@ C:\Users\Jakub\Desktop\Programowanie\Metaheuristic_system\Metaheuristic_system\b
 C:\Users\Jakub\Desktop\Programowanie\Metaheuristic_system\Metaheuristic_system\bin\Debug\net7.0\Swashbuckle.AspNetCore.SwaggerUI.dll
 C:\Users\Jakub\Desktop\Programowanie\Metaheuristic_system\Metaheuristic_system\obj\Debug\net7.0\Metaheuristic_system.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\Jakub\Desktop\Programowanie\Metaheuristic_system\Metaheuristic_system\bin\Debug\net7.0\appsettings.Production.json
+C:\Users\Jakub\Desktop\Programowanie\Metaheuristic_system\Metaheuristic_system\obj\Debug\net7.0\Metaheuristic_system.sourcelink.json

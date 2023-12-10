@@ -27,8 +27,4 @@
     <None Remove="..\.dockerignore" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="ReflectionRequiredInterfaces\" />
-  </ItemGroup>
-
 </Project>

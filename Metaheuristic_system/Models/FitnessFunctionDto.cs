@@ -12,8 +12,11 @@ namespace Metaheuristic_system.Models
         [Required]
         [MaxLength(30)]
         public string FileName { get; set; }
-        public int Dimension { get; set; }
+        [Required]
+        public int? Dimension { get; set; }
+        [Required]
         public List<List<double>> DomainArray { get; set; }
+        public bool Removeable { get; set; }
     }
 }
 

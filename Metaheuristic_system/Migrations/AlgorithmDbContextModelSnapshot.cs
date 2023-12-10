@@ -8,8 +8,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Metaheuristicsystem.Migrations
 {
-    [DbContext(typeof(AlgorithmDbContext))]
-    partial class AlgorithmDbContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(SystemDbContext))]
+    partial class SystemDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {

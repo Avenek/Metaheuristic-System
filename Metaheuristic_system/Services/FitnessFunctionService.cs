@@ -2,11 +2,14 @@
 using Metaheuristic_system.Entities;
 using Metaheuristic_system.Exceptions;
 using Metaheuristic_system.Models;
+using Metaheuristic_system.Reflection;
 using Metaheuristic_system.ReflectionRequiredInterfaces;
 using Metaheuristic_system.Validators;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.Globalization;
 using System.Reflection;
+using System.Runtime.Loader;
 using System.Security.Cryptography;
 
 namespace Metaheuristic_system.Services
@@ -24,10 +27,10 @@ namespace Metaheuristic_system.Services
 
     public class FitnessFunctionService : IFitnessFunctionService
     {
-        private readonly AlgorithmDbContext dbContext;
+        private readonly SystemDbContext dbContext;
         private readonly IMapper mapper;
 
-        public FitnessFunctionService(AlgorithmDbContext dbContext, IMapper mapper)
+        public FitnessFunctionService(SystemDbContext dbContext, IMapper mapper)
         {
             this.dbContext = dbContext;
             this.mapper = mapper;
@@ -117,23 +120,38 @@ namespace Metaheuristic_system.Services
             {
                 file.CopyTo(stream);
             }
-            Assembly assembly = Assembly.LoadFrom(fullPath);
-            var types = assembly.GetTypes();
-            var delegateType = assembly.GetTypes()
-            .FirstOrDefault(type => ReflectionValidator.ImplementsDelegate(type));
-            if (delegateType == null)
+            FileLoader fileLoader = new(fullPath);
+            fileLoader.Load();
+            var types = fileLoader.file.GetTypes();
+            var optimizationType = types.FirstOrDefault(type => type.GetInterfaces().Any(interfaceType => ReflectionValidator.ImplementsInterface(interfaceType, typeof(IFitnessFunction))));
+            if (optimizationType == null)
             {
                 File.Delete(fullPath);
-                throw new NotImplementInterfaceException("Zawartość pliku nie posiada wymaganej delegaty.");
+                throw new NotImplementInterfaceException("Zawartość pliku nie implementuje wymaganego interfejsu.");
             }
+
         }
 
         public int AddFitnessFunction(FitnessFunctionDto newFitnessFunctionDto)
         {
-            if(dbContext.FitnessFunctions.FirstOrDefault(f => f.FileName == newFitnessFunctionDto.FileName) == null) throw new TooLongNameException("Nie odnaleziono wymaganego pliku.");
+            string path = "./dll/fitnessFunction/";
+            string fullPath = path + newFitnessFunctionDto.FileName;
+            if (!File.Exists(path+newFitnessFunctionDto.FileName)) throw new NotFoundException("Nie odnaleziono wymaganego pliku.");
             if (newFitnessFunctionDto.Name.Length > 30) throw new TooLongNameException("Podano zbyt długą nazwę funckji testowej.");
 
+            FileLoader fileLoader = new(fullPath);
+            fileLoader.Load();
+            var types = fileLoader.file.GetTypes();
+            var optimizationType = types.FirstOrDefault(type => type.GetInterfaces().Any(interfaceType => 
+            ReflectionValidator.ImplementsInterface(interfaceType, typeof(IFitnessFunction)) && type.IsClass && type.Name == newFitnessFunctionDto.Name));
+            if (optimizationType == null)
+            {
+                File.Delete(fullPath);
+                throw new NotImplementInterfaceException("Zawartość pliku nie implementuje wymaganego interfejsu.");
+            }
+
             var fitnessFunction = mapper.Map<FitnessFunction>(newFitnessFunctionDto);
+            fitnessFunction.Removeable = true;
             dbContext.FitnessFunctions.Add(fitnessFunction);
             dbContext.SaveChanges();
 

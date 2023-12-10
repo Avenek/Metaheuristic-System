@@ -51,17 +51,17 @@ namespace Metaheuristic_system.Controllers
             return Ok();
         }
 
-        [HttpPost]
+        [HttpPost("file")]
         public ActionResult UploadFitnessFunctionFile([FromForm] IFormFile file)
         {
             fitnessFunctionService.UploadFitnessFunctionFile(file);
             return Ok();
         }
-
+        [HttpPost]
         public ActionResult AddFitnessFunction([FromBody] FitnessFunctionDto newFitnessFunctionDto)
         {
-            fitnessFunctionService.AddFitnessFunction(newFitnessFunctionDto);
-            return Ok();
+            int id = fitnessFunctionService.AddFitnessFunction(newFitnessFunctionDto);
+            return Created($"/api/fitnessFunction/{id}", null);
         }
     }
 }

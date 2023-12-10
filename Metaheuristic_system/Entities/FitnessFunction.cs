@@ -13,11 +13,11 @@ namespace Metaheuristic_system.Entities
         [Required]
         [MaxLength(30)]
         public string FileName { get; set; }
-        public int Dimension { get; set; }
+        public int? Dimension { get; set; }
         public string Domain { get; set; }
 
         [NotMapped]
-        public double[,] DomainArray { get; set; }
+        public List<List<double>> DomainArray { get; set; }
         public bool Removeable { get; set; }
     }
 }

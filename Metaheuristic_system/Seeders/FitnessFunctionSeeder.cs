@@ -4,9 +4,9 @@ namespace Metaheuristic_system.Seeders
 {
     public class FitnessFunctionSeeder
     {
-        private readonly AlgorithmDbContext dbContext;
+        private readonly SystemDbContext dbContext;
 
-        public FitnessFunctionSeeder(AlgorithmDbContext dbContext)
+        public FitnessFunctionSeeder(SystemDbContext dbContext)
         {
             this.dbContext = dbContext;
         }

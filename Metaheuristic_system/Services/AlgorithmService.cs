@@ -2,6 +2,7 @@
 using Metaheuristic_system.Entities;
 using Metaheuristic_system.Exceptions;
 using Metaheuristic_system.Models;
+using Metaheuristic_system.Reflection;
 using Metaheuristic_system.ReflectionRequiredInterfaces;
 using Metaheuristic_system.Validators;
 using System.Reflection;
@@ -19,10 +20,10 @@ namespace Metaheuristic_system.Services
 
     public class AlgorithmService : IAlgorithmService
     {
-        private readonly AlgorithmDbContext dbContext;
+        private readonly SystemDbContext dbContext;
         private readonly IMapper mapper;
 
-        public AlgorithmService(AlgorithmDbContext dbContext, IMapper mapper)
+        public AlgorithmService(SystemDbContext dbContext, IMapper mapper)
         {
             this.dbContext = dbContext;
             this.mapper = mapper;
@@ -100,16 +101,19 @@ namespace Metaheuristic_system.Services
             {
                 file.CopyTo(stream);
             }
-            Assembly assembly = Assembly.LoadFrom(fullPath);
-            var types = assembly.GetTypes();
-            var optimizationType = assembly.GetTypes()
-            .FirstOrDefault(type => type.GetInterfaces().Any(interfaceType => ReflectionValidator.ImplementsInterface(interfaceType, typeof(IOptimizationAlgorithm))));
+            FileLoader fileLoader = new(fullPath);
+            fileLoader.Load();
+            var types = fileLoader.file.GetTypes();
+            var optimizationType = types.FirstOrDefault(type => 
+                type.GetInterfaces().Any(interfaceType => 
+                ReflectionValidator.ImplementsInterface(interfaceType, typeof(IOptimizationAlgorithm))
+                ));
             if (optimizationType == null)
             {
                 File.Delete(fullPath);
                 throw new NotImplementInterfaceException("Zawartość pliku nie implementuje wymaganego interfejsu.");
             }
-            var algorithm = new Algorithm() { Name = algorithmName, FileName = fileName };
+            var algorithm = new Algorithm() { Name = algorithmName, FileName = fileName, Removeable = true };
             dbContext.Algorithms.Add(algorithm);
             dbContext.SaveChanges();
 

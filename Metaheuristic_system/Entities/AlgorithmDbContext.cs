@@ -2,13 +2,13 @@
 
 namespace Metaheuristic_system.Entities
 {
-    public class AlgorithmDbContext : DbContext
+    public class SystemDbContext : DbContext
     {
         private string connectionString;
         public DbSet<Algorithm> Algorithms { get; set; }
         public DbSet<FitnessFunction> FitnessFunctions { get; set; }
 
-        public AlgorithmDbContext(DbContextOptions<AlgorithmDbContext> options) : base(options)
+        public SystemDbContext(DbContextOptions<SystemDbContext> options) : base(options)
         {
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)

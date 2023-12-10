@@ -8,5 +8,6 @@ namespace Metaheuristic_system.Models
         [Required]
         [MaxLength(30)]
         public string Name { get; set; }
+        public bool Removeable { get; set; }
     }
 }

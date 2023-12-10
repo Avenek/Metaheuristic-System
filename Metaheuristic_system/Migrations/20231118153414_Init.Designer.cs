@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Metaheuristicsystem.Migrations
 {
-    [DbContext(typeof(AlgorithmDbContext))]
+    [DbContext(typeof(SystemDbContext))]
     [Migration("20231118153414_Init")]
     partial class Init
     {

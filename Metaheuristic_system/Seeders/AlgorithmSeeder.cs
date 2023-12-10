@@ -4,9 +4,9 @@ namespace Metaheuristic_system.Seeders
 {
     public class AlgorithmSeeder
     {
-        private readonly AlgorithmDbContext dbContext;
+        private readonly SystemDbContext dbContext;
 
-        public AlgorithmSeeder(AlgorithmDbContext dbContext)
+        public AlgorithmSeeder(SystemDbContext dbContext)
         {
             this.dbContext = dbContext;
         }
