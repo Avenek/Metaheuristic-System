@@ -44,7 +44,7 @@ namespace Metaheuristic_system.Services
                 type.GetInterfaces().Any(interfaceType =>
                 ReflectionValidator.ImplementsInterface(interfaceType, typeof(IOptimizationAlgorithm))
                 ));
-            List<Type> functionTypes = GetSelectedFunctionsType(selectedFunctions, functionPath, fileLoader);
+            Dictionary<int, Type> functionTypes = GetSelectedFunctionsType(selectedFunctions, functionPath, fileLoader);
 
             if (optimizationType != null)
             {
@@ -58,16 +58,15 @@ namespace Metaheuristic_system.Services
             }
         }
 
-        async private Task<List<ResultsDto>> PrepareDataAndInvokeTests(dynamic optimizationAlgorithm, List<Type> functionTypes, List<FitnessFunction> selectedFunctions)
+        async private Task<List<ResultsDto>> PrepareDataAndInvokeTests(dynamic optimizationAlgorithm, Dictionary<int, Type> functionTypes, List<FitnessFunction> selectedFunctions)
         {
             List<ResultsDto> results = new List<ResultsDto>();
             dynamic paramsData = optimizationAlgorithm.ParamsInfo;
-            double[] paramsValue = InitializeAlgorithmParams(paramsData);
             int availableProcessors = Environment.ProcessorCount;
             int maxParallelTasks = availableProcessors > 3 ? availableProcessors - 2 : 1;
             SemaphoreSlim semaphore = new SemaphoreSlim(maxParallelTasks);
             List<Task> solvingTasks = new List<Task>();
-            foreach (var function in functionTypes)
+            foreach (var f in functionTypes.Keys)
             {
                 await semaphore.WaitAsync();
 
@@ -80,14 +79,18 @@ namespace Metaheuristic_system.Services
                         {
                             if (paramsData[i].Name == "Dimension")
                             {
-                                dimension = (int)paramsValue[i];
+                                dimension = (int)paramsData[i].LowerBoundary;
                                 break;
                             }
                         }
                         if (dimension == -1) throw new NotFoundException("Brak parametru Dimension w ParamsInfo");
-                        double[,] domainArray = GetFunctionDomain(function, selectedFunctions, dimension);
-                        dynamic fitnessFunction = Activator.CreateInstance(function);
-                        List<ResultsDto> bestParameters = InvokeAlgorithmTest(optimizationAlgorithm, domainArray, fitnessFunction, paramsValue);
+                        double[,] domainArray = GetFunctionDomain(functionTypes[f], selectedFunctions, dimension);
+                        dynamic fitnessFunction = Activator.CreateInstance(functionTypes[f]);
+                        Dictionary<string, double> bestParameters = InvokeAlgorithmTest(optimizationAlgorithm, domainArray, fitnessFunction);
+                        ResultsDto bestResult = new ResultsDto();
+                        bestResult.FitnessFunctionId = f;
+                        bestResult.BestParams = bestParameters;
+                        results.Add(bestResult);
                     }
                     catch(Exception e)
                     {
@@ -99,16 +102,62 @@ namespace Metaheuristic_system.Services
                     }
                 }));
             }
-
-
             return results;
         }
 
-        private List<ResultsDto> InvokeAlgorithmTest(dynamic optimizationAlgorithm, double[,] domainArray, dynamic fitnessFunction, double[] paramsValue)
+        private Dictionary<string, double> InvokeAlgorithmTest(dynamic optimizationAlgorithm, double[,] domainArray, dynamic fitnessFunction)
         {
-            optimizationAlgorithm.Solve(fitnessFunction, domainArray, paramsValue);
-            Console.WriteLine(optimizationAlgorithm.FBest);
-            return new List<ResultsDto>();
+            dynamic paramsData = optimizationAlgorithm.ParamsInfo;
+            double[] paramsValue = InitializeAlgorithmParams(paramsData);
+            List<AlgorithmBestParameters> bestParameters= new List<AlgorithmBestParameters>();
+            while (true)
+            {
+                List<AlgorithmBestParameters> bestIter = new();
+                for (int iter = 0; iter < 10; iter++)
+                {
+                    optimizationAlgorithm.Solve(fitnessFunction, domainArray, paramsValue);
+                    AlgorithmBestParameters iterParams = new(optimizationAlgorithm.XBest, optimizationAlgorithm.FBest, paramsValue);
+                    bestIter.Add(iterParams);
+                }
+                AlgorithmBestParameters currentParams = bestIter.OrderBy(param => param.FBest).First();
+                bestParameters.Add(currentParams);
+                paramsValue = IncreaseParams(paramsValue, paramsData);
+                if (paramsValue[0] > paramsData[0].UpperBoundary)
+                {
+                    break;
+                }
+            }
+            Dictionary<string, double> bestResult = ChooseBestResult(bestParameters, paramsData);
+
+            return bestResult;
+        }
+
+        private Dictionary<string, double> ChooseBestResult(List<AlgorithmBestParameters> bestParameters, dynamic paramsData)
+        {
+            Dictionary<string, double> bestResult = new Dictionary<string, double>();
+            double[] bestParams = new double[paramsData.Length];
+
+            for(int i = 0; i < paramsData.Length; i++)
+            {
+                bestResult[paramsData[i].Name] = bestParams[i];
+            }
+            return bestResult;
+
+        }
+
+        private double[] IncreaseParams(double[] paramsValue, dynamic paramsData)
+        {
+            for(int i = paramsValue.Length-1 ; i >= 0; i--)
+            {
+                paramsValue[i] += (paramsData[i].UpperBoundary + paramsData[i].LowerBoundary) / 10;
+                if (paramsValue[i] < paramsData[i].UpperBoundary) break;
+                else
+                {
+                    paramsValue[i] = paramsData[i].LowerBoundary;
+                }
+            }
+
+            return paramsValue;
         }
 
         private double[,] GetFunctionDomain(Type functionType, List<FitnessFunction> selectedFunctions, int dimension)
@@ -128,9 +177,9 @@ namespace Metaheuristic_system.Services
             return domainArray;
         }
 
-        private List<Type> GetSelectedFunctionsType(List<FitnessFunction> selectedFunctions, string functionPath, FileLoader fileLoader)
+        private Dictionary<int, Type> GetSelectedFunctionsType(List<FitnessFunction> selectedFunctions, string functionPath, FileLoader fileLoader)
         {
-            List<Type> functionTypes = new();
+            Dictionary<int, Type> functionTypes = new();
             foreach (var function in selectedFunctions)
             {
                 FileLoader loader = new(functionPath + function.FileName);
@@ -140,7 +189,7 @@ namespace Metaheuristic_system.Services
                     ReflectionValidator.ImplementsInterface(interfaceType, typeof(IFitnessFunction)) && type.IsClass && type.Name == function.Name));
                 if (searchType != null)
                 {
-                    functionTypes.Add(searchType);
+                    functionTypes[function.Id] = searchType;
                 }
                 else
                 {
