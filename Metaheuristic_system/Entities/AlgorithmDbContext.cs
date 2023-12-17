@@ -39,13 +39,6 @@ namespace Metaheuristic_system.Entities
             modelBuilder.Entity<TestResults>()
                 .Property(t => t.TestId)
                 .IsRequired();
-            modelBuilder.Entity<TestResults>()
-                .Property(t => t.FitnessFunctionId)
-                .IsRequired();
-
-            modelBuilder.Entity<TestResults>()
-                .Property(t => t.AlgorithmId)
-                .IsRequired();
 
             modelBuilder.Entity<TestResults>()
                 .Property(t => t.Parameters)

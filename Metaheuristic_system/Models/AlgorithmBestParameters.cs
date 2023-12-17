@@ -4,7 +4,7 @@
     {
         public double[] XBest { get; set; }
         public double FBest { get; set; }
-        double[] BestParams { get; set; }
+        public double[] BestParams { get; set; }
 
        public AlgorithmBestParameters(double[] xBest, double fBest, double[] bestParams)
         {

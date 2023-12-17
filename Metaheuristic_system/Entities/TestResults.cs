@@ -7,10 +7,6 @@ namespace Metaheuristic_system.Entities
         public int Id { get; set; }
         [Required]
         public int TestId { get; set; }
-        [Required]
-        public int AlgorithmId { get; set; }
-        [Required]
-        public int FitnessFunctionId { get; set; }
         public string XBest{ get; set; }
         public double FBest { get; set; }
         [Required]

@@ -51,18 +51,26 @@ namespace Metaheuristic_system.Services
             {
                 dynamic optimizationAlgorithm = Activator.CreateInstance(optimizationType); 
                 Sessions session;
+                var runningSessions = dbContext.Sessions
+                    .Where(s => s.State == "RUNNING")
+                    .ToList();
+                foreach (var s in runningSessions)
+                {
+                    s.State = "SUSPENDED";
+                }
                 if (!resume)
                 {
+
                     session = new() { AlgorithmIds = id.ToString(), FitnessFunctionIds = String.Join(";", fitnessFunctionIds), State = "RUNNING" };
                     dbContext.Sessions.Add(session);
-                    dbContext.SaveChanges();
                     sessionId = session.Id;
                 }
                 else
                 {
                     session = dbContext.Sessions.FirstOrDefault(s => s.Id == sessionId);
+                    session.State = "RUNNING";
                 }
-
+                dbContext.SaveChanges();
                 List<ResultsDto> results = await PrepareDataAndInvokeTests(optimizationAlgorithm, functionTypes, selectedFunctions, sessionId, id, cancellationToken, resume);
                 foreach (var result in results)
                 {
@@ -111,10 +119,8 @@ namespace Metaheuristic_system.Services
                         if (dimension == -1) throw new NotFoundException("Brak parametru Dimension w ParamsInfo");
                         double[,] domainArray = GetFunctionDomain(functionTypes[f], selectedFunctions, dimension);
                         dynamic fitnessFunction = Activator.CreateInstance(functionTypes[f]);
-                        Dictionary<string, double> bestParameters = await InvokeTest(optimizationAlgorithm, domainArray, fitnessFunction, tests, sessionId, algorithmId, f, cancellationToken, resume);
-                        ResultsDto bestResult = new ResultsDto();
+                        ResultsDto bestResult = await InvokeTest(optimizationAlgorithm, domainArray, fitnessFunction, tests, sessionId, algorithmId, f, cancellationToken, resume);
                         bestResult.FitnessFunctionId = f;
-                        bestResult.BestParams = bestParameters;
                         results.Add(bestResult);
                     }
                     catch(Exception e)
@@ -214,7 +220,7 @@ namespace Metaheuristic_system.Services
                 {
                     result.FitnessFunctionId = id;
                 }
-                session.State = "FINISHED";
+                session.State = cancellationToken.IsCancellationRequested ? "SUSPENDED" : "FINISHED";
                 dbContext.SaveChanges();
                 return results;
             }
@@ -257,10 +263,8 @@ namespace Metaheuristic_system.Services
                         }
                         if (dimension == -1) throw new NotFoundException("Brak parametru Dimension w ParamsInfo");
                         double[,] domainArray = GetFunctionDomain(fitnessFunction, dimension);
-                        Dictionary<string, double> bestParameters = await InvokeTest(optimizationAlgorithm, domainArray, functionInstance, tests, sessionId, a, fitnessFunctionId, cancellationToken, resume);
-                        ResultsDto bestResult = new ResultsDto();
+                        ResultsDto bestResult = await InvokeTest(optimizationAlgorithm, domainArray, functionInstance, tests, sessionId, a, fitnessFunctionId, cancellationToken, resume);
                         bestResult.AlgorithmId = a;
-                        bestResult.BestParams = bestParameters;
                         results.Add(bestResult);
                     }
                     catch (Exception e)
@@ -299,7 +303,7 @@ namespace Metaheuristic_system.Services
         }
 
         #endregion
-        private Dictionary<string, double> InvokeTest(dynamic optimizationAlgorithm, double[,] domainArray, dynamic fitnessFunction, Tests tests, int sessionId, int algorithmId, int functionId, CancellationToken cancellationToken, bool resume)
+        private ResultsDto InvokeTest(dynamic optimizationAlgorithm, double[,] domainArray, dynamic fitnessFunction, Tests tests, int sessionId, int algorithmId, int functionId, CancellationToken cancellationToken, bool resume)
         {
             dynamic paramsData = optimizationAlgorithm.ParamsInfo;
             double[] paramsValue = InitializeAlgorithmParams(paramsData, sessionId, algorithmId, functionId, resume);
@@ -317,6 +321,8 @@ namespace Metaheuristic_system.Services
                 }
                 AlgorithmBestParameters currentParams = bestIter.OrderBy(param => param.FBest).First();
                 bestParameters.Add(currentParams);
+                TestResults testResults = new() { TestId = tests.Id, XBest = String.Join(';', optimizationAlgorithm.XBest), FBest = optimizationAlgorithm.FBest, Parameters = String.Join(';', paramsValue) };
+                dbContext.TestResults.Add(testResults);
                 double progress = iteration / Math.Pow(5, paramsValue.Length);
                 tests.Progress = progress;
                 dbContext.SaveChanges();
@@ -327,20 +333,22 @@ namespace Metaheuristic_system.Services
                     break;
                 }
             }
-            Dictionary<string, double> bestResult = ChooseBestResult(bestParameters, paramsData);
+            ResultsDto bestResult = ChooseBestResult(bestParameters, paramsData);
 
             return bestResult;
         }
-        private Dictionary<string, double> ChooseBestResult(List<AlgorithmBestParameters> bestParameters, dynamic paramsData)
+        private ResultsDto ChooseBestResult(List<AlgorithmBestParameters> bestParameters, dynamic paramsData)
         {
             Dictionary<string, double> bestResult = new Dictionary<string, double>();
             double[] bestParams = new double[paramsData.Length];
-
+            AlgorithmBestParameters algorithmBestParameters = bestParameters.OrderBy(test => test.FBest).First();
+            bestParams = algorithmBestParameters.BestParams;
             for(int i = 0; i < paramsData.Length; i++)
             {
                 bestResult[paramsData[i].Name] = bestParams[i];
             }
-            return bestResult;
+            ResultsDto bestResults = new ResultsDto() { BestParams = bestResult, FBest = algorithmBestParameters.FBest, XBest = algorithmBestParameters.XBest };
+            return bestResults;
         }
 
         private double[] IncreaseParams(double[] paramsValue, dynamic paramsData)
@@ -432,12 +440,13 @@ namespace Metaheuristic_system.Services
 
         public List<TestsDto> GetCurrentProgress()
         {
-            int currentSessionId = dbContext.Sessions.LastOrDefault(s => s.State == "RUNNING").Id;
+            int currentSessionId = dbContext.Sessions.FirstOrDefault(s => s.State == "RUNNING").Id;
             List<TestsDto> progressList = dbContext.Tests
                 .Where(t => t.SessionId == currentSessionId)
                 .Select(t => mapper.Map<TestsDto>(t))
                 .ToList();
             return progressList;
+            
         }
     }
 }

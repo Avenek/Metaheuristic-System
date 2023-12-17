@@ -5,7 +5,7 @@
     {
         string Name { get; set; }
 
-        void Solve(dynamic f, double[,] domain, double[] parameters);
+        void Solve(dynamic f, double[,] domain, double[] parameters, bool resume);
 
         ParamInfo[] ParamsInfo { get; set; }
 
