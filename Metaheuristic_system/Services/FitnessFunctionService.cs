@@ -18,9 +18,8 @@ namespace Metaheuristic_system.Services
     {
         IEnumerable<FitnessFunctionDto> GetAll();
         FitnessFunctionDto GetById(int id);
-        void UpdateNameById(int id, string newName);
         void DeleteById(int id);
-        void UpdateDomainAndDimensionById(int id, DimensionAndDomainDto updatedFunction);
+        void UpdateFitnessFunctionById(int id, UpdateFitnessFunctionDto updatedFunction);
         int AddFitnessFunction(FitnessFunctionDto newFitnessFunctionDto);
         void UploadFitnessFunctionFile([FromForm] IFormFile file);
     }
@@ -51,22 +50,6 @@ namespace Metaheuristic_system.Services
 
             return fitnessFunctionDto;
         }
-
-        public void UpdateNameById(int id, string newName)
-        {
-            var fitnessFunction = dbContext.FitnessFunctions.FirstOrDefault(a => a.Id == id);
-            if (fitnessFunction == null)
-            {
-                throw new NotFoundException($"Nie odnaleziono funkcji o id {id}.");
-            }
-            if (newName.Length > 30)
-            {
-                throw new TooLongNameException("Podano zbyt długą nazwę.");
-            }
-            fitnessFunction.Name = newName;
-            dbContext.SaveChanges();
-        }
-
         public void DeleteById(int id)
         {
             var fitnessFunction = dbContext.FitnessFunctions.FirstOrDefault(a => a.Id == id);
@@ -86,7 +69,7 @@ namespace Metaheuristic_system.Services
             dbContext.SaveChanges();
         }
 
-        public void UpdateDomainAndDimensionById(int id, DimensionAndDomainDto updatedFunction)
+        public void UpdateFitnessFunctionById(int id, UpdateFitnessFunctionDto updatedFunction)
         {
             var fitnessFunction = dbContext.FitnessFunctions.FirstOrDefault(a => a.Id == id);
             if (fitnessFunction == null)
@@ -100,6 +83,7 @@ namespace Metaheuristic_system.Services
             fitnessFunction.Dimension = updatedFunction.Dimension;
             string jsonDomain = JsonConvert.SerializeObject(updatedFunction.DomainArray);
             fitnessFunction.Domain = jsonDomain;
+            fitnessFunction.Name = updatedFunction.Name;
             dbContext.SaveChanges();
         }
 

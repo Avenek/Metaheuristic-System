@@ -30,13 +30,6 @@ namespace Metaheuristic_system.Controllers
             return Ok(fitnessFunction);
         }
 
-        [HttpPatch("{id}")]
-        public ActionResult UpdateNameById([FromRoute] int id, [FromQuery] string newName)
-        {
-            fitnessFunctionService.UpdateNameById(id, newName);
-            return Ok();
-        }
-
         [HttpDelete("{id}")]
         public ActionResult DeleteById([FromRoute] int id)
         {
@@ -45,9 +38,9 @@ namespace Metaheuristic_system.Controllers
         }
 
         [HttpPatch("{id}")]
-        public ActionResult UpdateDomainAndDimensionById([FromRoute] int id, [FromBody] DimensionAndDomainDto functionParams)
+        public ActionResult UpdateFitnessFunctionById([FromRoute] int id, [FromBody] UpdateFitnessFunctionDto functionParams)
         {
-            fitnessFunctionService.UpdateDomainAndDimensionById(id, functionParams);
+            fitnessFunctionService.UpdateFitnessFunctionById(id, functionParams);
             return Ok();
         }
 

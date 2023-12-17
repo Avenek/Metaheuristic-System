@@ -15,11 +15,40 @@ namespace Metaheuristic_system.Controllers
             this.taskService = taskService;
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult> GetResultsOfTestingAlgorithm([FromRoute] int id, [FromBody] int[] fitnessFunctionIds, CancellationToken cancellationToken)
+        [HttpGet("algorithm/{id}")]
+        public async Task<IActionResult> TestAlgorithm([FromRoute] int id, [FromBody] int[] fitnessFunctionIds, CancellationToken cancellationToken)
         {
-            var results = await taskService.GetResultsOfTestingAlgorithm(id, fitnessFunctionIds, cancellationToken);
+            var results = await taskService.TestAlgorithm(id, fitnessFunctionIds, cancellationToken);
+
             return Ok(results);
+        }
+
+        [HttpGet("fitnessFunction/{id}")]
+        public async Task<IActionResult> TestFitnessFunction([FromRoute] int id, [FromBody] int[] algorithmIds, CancellationToken cancellationToken)
+        {
+            var results = await taskService.TestFitnessFunction(id, algorithmIds, cancellationToken);
+
+            return Ok(results);
+        }
+        [HttpGet("{id}")]
+        public async Task<IActionResult> ResumeSession([FromRoute] int id, [FromQuery] bool resume, CancellationToken cancellationToken)
+        {
+            if (resume)
+            {
+                var results = await taskService.ResumeSession(id, cancellationToken);
+                return Ok(results);
+            }
+            else
+            {
+                return BadRequest("Wymagane jest ustawienie parametru resume na true.");
+            }
+        }
+
+        [HttpGet]
+        public ActionResult<List<TestsDto>> GetCurrentProgress()
+        {
+            var progressList = taskService.GetCurrentProgress();
+            return Ok(progressList);
         }
 
     }
