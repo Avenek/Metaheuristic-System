@@ -92,14 +92,15 @@ namespace Metaheuristic_system.Services
             if (file.FileName.Length > 30) throw new TooLongNameException("Podano zbyt długą nazwę pliku.");
             if (file == null || file.Name.Length == 0) throw new BadFileException("Napotkano problemy z plikiem.");
             if (Path.GetExtension(file.FileName) != ".dll") throw new BadFileExtensionException("Plik posiada złe rozszerzenie.");
-
             string path = "./dll/fitnessFunction";
+
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
             }
             string fileName = file.FileName;
             string fullPath = $"{path}/{fileName}";
+            if (File.Exists(path + file.FileName)) throw new FileAlreadyExistException($"Plik o nazwie {file.FileName} juz istnieje.");
             using (var stream = new FileStream(fullPath, FileMode.Create))
             {
                 file.CopyTo(stream);
