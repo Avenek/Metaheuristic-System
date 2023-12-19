@@ -6,6 +6,8 @@ using Metaheuristic_system.Reflection;
 using Metaheuristic_system.ReflectionRequiredInterfaces;
 using Metaheuristic_system.Validators;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using static System.Net.Mime.MediaTypeNames;
@@ -23,12 +25,14 @@ namespace Metaheuristic_system.Services
     public class TaskService : ITaskService
     {
         private readonly SystemDbContext dbContext;
+        private readonly DbContextFactory dbContextFactory;
         private readonly IMapper mapper;
 
-        public TaskService(SystemDbContext dbContext, IMapper mapper)
+        public TaskService(SystemDbContext dbContext, IMapper mapper, DbContextFactory dbContextFactory)
         {
             this.dbContext = dbContext;
             this.mapper = mapper;
+            this.dbContextFactory = dbContextFactory;
         }
 
         #region Testing Algorithm
@@ -49,7 +53,6 @@ namespace Metaheuristic_system.Services
 
             if (optimizationType != null)
             {
-                dynamic optimizationAlgorithm = Activator.CreateInstance(optimizationType); 
                 Sessions session;
                 var runningSessions = dbContext.Sessions
                     .Where(s => s.State == "RUNNING")
@@ -63,7 +66,6 @@ namespace Metaheuristic_system.Services
 
                     session = new() { AlgorithmIds = id.ToString(), FitnessFunctionIds = String.Join(";", fitnessFunctionIds), State = "RUNNING" };
                     dbContext.Sessions.Add(session);
-                    sessionId = session.Id;
                 }
                 else
                 {
@@ -71,12 +73,20 @@ namespace Metaheuristic_system.Services
                     session.State = "RUNNING";
                 }
                 dbContext.SaveChanges();
-                List<ResultsDto> results = await PrepareDataAndInvokeTests(optimizationAlgorithm, functionTypes, selectedFunctions, sessionId, id, cancellationToken, resume);
+                                    sessionId = session.Id;
+                List<ResultsDto> results = await PrepareDataAndInvokeTests(optimizationType, functionTypes, selectedFunctions, sessionId, id, cancellationToken, resume);
                 foreach (var result in results)
                 {
                     result.AlgorithmId = id;
                 }
-                session.State = "FINISHED";
+                if (cancellationToken.IsCancellationRequested)
+                {
+                    session.State = "SUSPENDED";
+                }
+                else
+                {
+                    session.State = "FINISHED";
+                }
                 dbContext.SaveChanges();
                 return results;
             }
@@ -86,10 +96,9 @@ namespace Metaheuristic_system.Services
             }
         }
 
-        async private Task<List<ResultsDto>> PrepareDataAndInvokeTests(dynamic optimizationAlgorithm, Dictionary<int, Type> functionTypes, List<FitnessFunction> selectedFunctions, int sessionId, int algorithmId, CancellationToken cancellationToken, bool resume)
+        async private Task<List<ResultsDto>> PrepareDataAndInvokeTests(Type algorithmType, Dictionary<int, Type> functionTypes, List<FitnessFunction> selectedFunctions, int sessionId, int algorithmId, CancellationToken cancellationToken, bool resume)
         {
             List<ResultsDto> results = new List<ResultsDto>();
-            dynamic paramsData = optimizationAlgorithm.ParamsInfo;
             int availableProcessors = Environment.ProcessorCount;
             int maxParallelTasks = availableProcessors > 3 ? availableProcessors - 2 : 1;
             SemaphoreSlim semaphore = new SemaphoreSlim(maxParallelTasks);
@@ -98,30 +107,36 @@ namespace Metaheuristic_system.Services
             {
                 await semaphore.WaitAsync();
                 if (cancellationToken.IsCancellationRequested) return null;
-                Tests tests = new() { SessionId = sessionId, AlgorithmId = algorithmId, FitnessFunctionId = f, Progress = 0 };
-                dbContext.Tests.Add(tests);
-                dbContext.SaveChanges();
+
                 solvingTasks.Add(Task.Run(async () =>
                 {
                     try
                     {
-                        if (cancellationToken.IsCancellationRequested) return;
-                        tests.FitnessFunctionId = f;
-                        int dimension = -1;
-                        for (int i = 0; i < paramsData.Length; i++)
+                        using (var dbContext = dbContextFactory.CreateDbContext())
                         {
-                            if (paramsData[i].Name == "Dimension")
+                            dynamic optimizationAlgorithm = Activator.CreateInstance(algorithmType);
+                            Tests tests = new() { SessionId = sessionId, AlgorithmId = algorithmId, FitnessFunctionId = f, Progress = 0 };
+                            await dbContext.Tests.AddAsync(tests);
+                            await dbContext.SaveChangesAsync();
+                            if (cancellationToken.IsCancellationRequested) return;
+                            tests.FitnessFunctionId = f;
+                            dynamic paramsData = optimizationAlgorithm.ParamsInfo;
+                            int dimension = -1;
+                            for (int i = 0; i < paramsData.Length; i++)
                             {
-                                dimension = (int)paramsData[i].LowerBoundary;
-                                break;
+                                if (paramsData[i].Name == "Dimension")
+                                {
+                                    dimension = (int)paramsData[i].LowerBoundary;
+                                    break;
+                                }
                             }
+                            if (dimension == -1) throw new NotFoundException("Brak parametru Dimension w ParamsInfo");
+                            double[,] domainArray = GetFunctionDomain(functionTypes[f], selectedFunctions, dimension);
+                            dynamic fitnessFunction = Activator.CreateInstance(functionTypes[f]);
+                            ResultsDto bestResult = await InvokeTest(optimizationAlgorithm, domainArray, fitnessFunction, tests, sessionId, algorithmId, f, cancellationToken, resume, dbContext);
+                            bestResult.FitnessFunctionId = f;
+                            results.Add(bestResult);
                         }
-                        if (dimension == -1) throw new NotFoundException("Brak parametru Dimension w ParamsInfo");
-                        double[,] domainArray = GetFunctionDomain(functionTypes[f], selectedFunctions, dimension);
-                        dynamic fitnessFunction = Activator.CreateInstance(functionTypes[f]);
-                        ResultsDto bestResult = await InvokeTest(optimizationAlgorithm, domainArray, fitnessFunction, tests, sessionId, algorithmId, f, cancellationToken, resume);
-                        bestResult.FitnessFunctionId = f;
-                        results.Add(bestResult);
                     }
                     catch(Exception e)
                     {
@@ -201,7 +216,6 @@ namespace Metaheuristic_system.Services
 
             if (functionType != null)
             {
-                dynamic functionInstance = Activator.CreateInstance(functionType);
               
                 Sessions session;
                 if (!resume)
@@ -215,7 +229,7 @@ namespace Metaheuristic_system.Services
                 {
                     session = dbContext.Sessions.FirstOrDefault(s => s.Id == sessionId);
                 }
-                List<ResultsDto> results = await PrepareDataAndInvokeTests(functionInstance, algorithmTypes, fitnessFunction, session.Id, id, cancellationToken, resume);
+                List<ResultsDto> results = await PrepareDataAndInvokeTests(functionType, algorithmTypes, fitnessFunction, session.Id, id, cancellationToken, resume);
                 foreach(var result in results)
                 {
                     result.FitnessFunctionId = id;
@@ -230,7 +244,7 @@ namespace Metaheuristic_system.Services
             }
         }
 
-        async private Task<List<ResultsDto>> PrepareDataAndInvokeTests(dynamic functionInstance, Dictionary<int, Type> algorithmTypes, FitnessFunction fitnessFunction, int sessionId, int fitnessFunctionId, CancellationToken cancellationToken, bool resume)
+        async private Task<List<ResultsDto>> PrepareDataAndInvokeTests(Type functionType, Dictionary<int, Type> algorithmTypes, FitnessFunction fitnessFunction, int sessionId, int fitnessFunctionId, CancellationToken cancellationToken, bool resume)
         {
             List<ResultsDto> results = new List<ResultsDto>();
             int availableProcessors = Environment.ProcessorCount;
@@ -249,23 +263,27 @@ namespace Metaheuristic_system.Services
                 {
                     try
                     {
-                        if (cancellationToken.IsCancellationRequested) return;
-                        dynamic optimizationAlgorithm = Activator.CreateInstance(algorithmTypes[a]);
-                        dynamic paramsData = optimizationAlgorithm.ParamsInfo;
-                        int dimension = -1;
-                        for (int i = 0; i < paramsData.Length; i++)
+                        using (var dbContext = dbContextFactory.CreateDbContext())
                         {
-                            if (paramsData[i].Name == "Dimension")
+                            dynamic functionInstance = Activator.CreateInstance(functionType);
+                            if (cancellationToken.IsCancellationRequested) return;
+                            dynamic optimizationAlgorithm = Activator.CreateInstance(algorithmTypes[a]);
+                            dynamic paramsData = optimizationAlgorithm.ParamsInfo;
+                            int dimension = -1;
+                            for (int i = 0; i < paramsData.Length; i++)
                             {
-                                dimension = (int)paramsData[i].LowerBoundary;
-                                break;
+                                if (paramsData[i].Name == "Dimension")
+                                {
+                                    dimension = (int)paramsData[i].LowerBoundary;
+                                    break;
+                                }
                             }
+                            if (dimension == -1) throw new NotFoundException("Brak parametru Dimension w ParamsInfo");
+                            double[,] domainArray = GetFunctionDomain(fitnessFunction, dimension);
+                            ResultsDto bestResult = await InvokeTest(optimizationAlgorithm, domainArray, functionInstance, tests, sessionId, a, fitnessFunctionId, cancellationToken, resume, dbContext);
+                            bestResult.AlgorithmId = a;
+                            results.Add(bestResult);
                         }
-                        if (dimension == -1) throw new NotFoundException("Brak parametru Dimension w ParamsInfo");
-                        double[,] domainArray = GetFunctionDomain(fitnessFunction, dimension);
-                        ResultsDto bestResult = await InvokeTest(optimizationAlgorithm, domainArray, functionInstance, tests, sessionId, a, fitnessFunctionId, cancellationToken, resume);
-                        bestResult.AlgorithmId = a;
-                        results.Add(bestResult);
                     }
                     catch (Exception e)
                     {
@@ -303,7 +321,7 @@ namespace Metaheuristic_system.Services
         }
 
         #endregion
-        private ResultsDto InvokeTest(dynamic optimizationAlgorithm, double[,] domainArray, dynamic fitnessFunction, Tests tests, int sessionId, int algorithmId, int functionId, CancellationToken cancellationToken, bool resume)
+        private ResultsDto InvokeTest(dynamic optimizationAlgorithm, double[,] domainArray, dynamic fitnessFunction, Tests tests, int sessionId, int algorithmId, int functionId, CancellationToken cancellationToken, bool resume, SystemDbContext dbContext)
         {
             dynamic paramsData = optimizationAlgorithm.ParamsInfo;
             double[] paramsValue = InitializeAlgorithmParams(paramsData, sessionId, algorithmId, functionId, resume);

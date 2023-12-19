@@ -23,7 +23,7 @@ namespace Metaheuristic_system
             {
                 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
                 options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
-            });
+            }, ServiceLifetime.Transient);
             builder.Services.AddScoped<AlgorithmSeeder>();
             builder.Services.AddScoped<FitnessFunctionSeeder>();
             builder.Services.AddScoped<ErrorHandlingMiddleware>();
@@ -42,6 +42,7 @@ namespace Metaheuristic_system
                 );
             });
             builder.Services.AddSwaggerGen();
+            builder.Services.AddTransient<DbContextFactory>();
 
             var app = builder.Build();
             app.UseCors("FrontEndClient");
