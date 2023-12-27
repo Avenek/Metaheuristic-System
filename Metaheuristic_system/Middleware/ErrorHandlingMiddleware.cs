@@ -71,6 +71,12 @@ namespace Metaheuristic_system.Middleware
                 context.Response.StatusCode = 400;
                 await context.Response.WriteAsync(e.Message);
             }
+            catch (InvalidArgumentException e)
+            {
+                logger.LogError(e, e.Message);
+                context.Response.StatusCode = 400;
+                await context.Response.WriteAsync(e.Message);
+            }
             catch (Exception e)
             {
                 logger.LogError(e, e.Message);

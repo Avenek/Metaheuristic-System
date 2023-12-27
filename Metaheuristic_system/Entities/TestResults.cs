@@ -11,5 +11,7 @@ namespace Metaheuristic_system.Entities
         public double FBest { get; set; }
         [Required]
         public string Parameters { get; set; }
+
+        public virtual Tests Test { get; set; }
     }
 }

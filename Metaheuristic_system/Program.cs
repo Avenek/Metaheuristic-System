@@ -30,7 +30,7 @@ namespace Metaheuristic_system
             builder.Services.AddScoped<IAlgorithmService, AlgorithmService>();
             builder.Services.AddScoped<IFitnessFunctionService, FitnessFunctionService>();
             builder.Services.AddScoped<ITaskService, TaskService>();
-            builder.Services.AddScoped<IPausedSessionService, PausedSessionService>();
+            builder.Services.AddScoped<ISessionService, SessionService>();
             builder.Services.AddAutoMapper(typeof(FitnessFunctionMappingProfile));
             builder.Services.AddAutoMapper(typeof(AlgorithmMappingProfile));
             builder.Services.AddCors(options =>

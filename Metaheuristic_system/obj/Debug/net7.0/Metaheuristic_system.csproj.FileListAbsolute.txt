@@ -99,3 +99,17 @@ C:\Users\Jakub\OneDrive\Desktop\C#\Metaheuristic-System\Metaheuristic_system\bin
 C:\Users\Jakub\OneDrive\Desktop\C#\Metaheuristic-System\Metaheuristic_system\bin\Debug\net7.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 C:\Users\Jakub\OneDrive\Desktop\C#\Metaheuristic-System\Metaheuristic_system\bin\Debug\net7.0\Swashbuckle.AspNetCore.SwaggerUI.dll
 C:\Users\Jakub\OneDrive\Desktop\C#\Metaheuristic-System\Metaheuristic_system\obj\Debug\net7.0\Metaheuristic_system.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\Jakub\Desktop\Programowanie\Metaheuristic_System\Metaheuristic_system\bin\Debug\net7.0\BouncyCastle.Crypto.dll
+C:\Users\Jakub\Desktop\Programowanie\Metaheuristic_System\Metaheuristic_system\bin\Debug\net7.0\itextsharp.dll
+C:\Users\Jakub\Desktop\Programowanie\Metaheuristic_System\Metaheuristic_system\bin\Debug\net7.0\itext.barcodes.dll
+C:\Users\Jakub\Desktop\Programowanie\Metaheuristic_System\Metaheuristic_system\bin\Debug\net7.0\itext.bouncy-castle-connector.dll
+C:\Users\Jakub\Desktop\Programowanie\Metaheuristic_System\Metaheuristic_system\bin\Debug\net7.0\itext.forms.dll
+C:\Users\Jakub\Desktop\Programowanie\Metaheuristic_System\Metaheuristic_system\bin\Debug\net7.0\itext.io.dll
+C:\Users\Jakub\Desktop\Programowanie\Metaheuristic_System\Metaheuristic_system\bin\Debug\net7.0\itext.kernel.dll
+C:\Users\Jakub\Desktop\Programowanie\Metaheuristic_System\Metaheuristic_system\bin\Debug\net7.0\itext.layout.dll
+C:\Users\Jakub\Desktop\Programowanie\Metaheuristic_System\Metaheuristic_system\bin\Debug\net7.0\itext.pdfa.dll
+C:\Users\Jakub\Desktop\Programowanie\Metaheuristic_System\Metaheuristic_system\bin\Debug\net7.0\itext.sign.dll
+C:\Users\Jakub\Desktop\Programowanie\Metaheuristic_System\Metaheuristic_system\bin\Debug\net7.0\itext.styledxmlparser.dll
+C:\Users\Jakub\Desktop\Programowanie\Metaheuristic_System\Metaheuristic_system\bin\Debug\net7.0\itext.svg.dll
+C:\Users\Jakub\Desktop\Programowanie\Metaheuristic_System\Metaheuristic_system\bin\Debug\net7.0\itext.commons.dll
+C:\Users\Jakub\Desktop\Programowanie\Metaheuristic_System\Metaheuristic_system\bin\Debug\net7.0\Microsoft.DotNet.PlatformAbstractions.dll

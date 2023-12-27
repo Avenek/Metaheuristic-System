@@ -12,6 +12,8 @@ namespace Metaheuristic_system.Entities
         public string FitnessFunctionIds { get; set; }
         [Required]
         public string State { get; set; }
+
+        public virtual List<Tests> Tests { get; set; }
     }
 
 }

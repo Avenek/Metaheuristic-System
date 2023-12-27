@@ -100,7 +100,7 @@ namespace Metaheuristic_system.Services
             }
             string fileName = file.FileName;
             string fullPath = $"{path}/{fileName}";
-            if (File.Exists(path + file.FileName)) throw new FileAlreadyExistException($"Plik o nazwie {file.FileName} juz istnieje.");
+            if (File.Exists(fullPath)) throw new FileAlreadyExistException($"Plik o nazwie {file.FileName} juz istnieje.");
             using (var stream = new FileStream(fullPath, FileMode.Create))
             {
                 file.CopyTo(stream);

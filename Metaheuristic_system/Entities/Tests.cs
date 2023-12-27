@@ -13,5 +13,8 @@ namespace Metaheuristic_system.Entities
         public int FitnessFunctionId { get; set; }
         [Required]
         public double Progress { get; set; }
+
+        public virtual Sessions Session { get; set; }
+        public virtual List<TestResults> Results { get; set; }
     }
 }

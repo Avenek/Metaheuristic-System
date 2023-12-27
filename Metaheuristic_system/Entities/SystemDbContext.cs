@@ -55,6 +55,16 @@ namespace Metaheuristic_system.Entities
             modelBuilder.Entity<Sessions>()
                 .Property(s => s.State)
                 .IsRequired();
+
+            modelBuilder.Entity<Tests>()
+            .HasOne(t => t.Session)
+            .WithMany(s => s.Tests)
+            .HasForeignKey(t => t.SessionId);
+
+            modelBuilder.Entity<TestResults>()
+            .HasOne(t => t.Test)
+            .WithMany(s => s.Results)
+            .HasForeignKey(t => t.TestId);
         }
     }
 }

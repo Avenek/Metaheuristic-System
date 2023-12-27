@@ -121,19 +121,10 @@ namespace Metaheuristic_system.Services
                             if (cancellationToken.IsCancellationRequested) return;
                             tests.FitnessFunctionId = f;
                             dynamic paramsData = optimizationAlgorithm.ParamsInfo;
-                            int dimension = -1;
-                            for (int i = 0; i < paramsData.Length; i++)
-                            {
-                                if (paramsData[i].Name == "Dimension")
-                                {
-                                    dimension = (int)paramsData[i].LowerBoundary;
-                                    break;
-                                }
-                            }
-                            if (dimension == -1) throw new NotFoundException("Brak parametru Dimension w ParamsInfo");
-                            double[,] domainArray = GetFunctionDomain(functionTypes[f], selectedFunctions, dimension);
                             dynamic fitnessFunction = Activator.CreateInstance(functionTypes[f]);
-                            ResultsDto bestResult = await InvokeTest(optimizationAlgorithm, domainArray, fitnessFunction, tests, sessionId, algorithmId, f, cancellationToken, resume, dbContext);
+                            var function = dbContext.FitnessFunctions.FirstOrDefault(function => function.Id == f);
+                            ResultsDto bestResult = await InvokeTest(optimizationAlgorithm, fitnessFunction, tests, sessionId, algorithmId, function, cancellationToken, resume, dbContext);
+                            bestResult.SessionId = sessionId;
                             bestResult.FitnessFunctionId = f;
                             results.Add(bestResult);
                         }
@@ -269,18 +260,8 @@ namespace Metaheuristic_system.Services
                             if (cancellationToken.IsCancellationRequested) return;
                             dynamic optimizationAlgorithm = Activator.CreateInstance(algorithmTypes[a]);
                             dynamic paramsData = optimizationAlgorithm.ParamsInfo;
-                            int dimension = -1;
-                            for (int i = 0; i < paramsData.Length; i++)
-                            {
-                                if (paramsData[i].Name == "Dimension")
-                                {
-                                    dimension = (int)paramsData[i].LowerBoundary;
-                                    break;
-                                }
-                            }
-                            if (dimension == -1) throw new NotFoundException("Brak parametru Dimension w ParamsInfo");
-                            double[,] domainArray = GetFunctionDomain(fitnessFunction, dimension);
-                            ResultsDto bestResult = await InvokeTest(optimizationAlgorithm, domainArray, functionInstance, tests, sessionId, a, fitnessFunctionId, cancellationToken, resume, dbContext);
+                            ResultsDto bestResult = await InvokeTest(optimizationAlgorithm, functionInstance, tests, sessionId, a, fitnessFunction, cancellationToken, resume, dbContext);
+                            bestResult.SessionId = sessionId;
                             bestResult.AlgorithmId = a;
                             results.Add(bestResult);
                         }
@@ -321,16 +302,48 @@ namespace Metaheuristic_system.Services
         }
 
         #endregion
-        private ResultsDto InvokeTest(dynamic optimizationAlgorithm, double[,] domainArray, dynamic fitnessFunction, Tests tests, int sessionId, int algorithmId, int functionId, CancellationToken cancellationToken, bool resume, SystemDbContext dbContext)
+        private ResultsDto InvokeTest(dynamic optimizationAlgorithm, dynamic fitnessFunction, Tests tests, int sessionId, int algorithmId, FitnessFunction function, CancellationToken cancellationToken, bool resume, SystemDbContext dbContext)
         {
             dynamic paramsData = optimizationAlgorithm.ParamsInfo;
-            double[] paramsValue = InitializeAlgorithmParams(paramsData, sessionId, algorithmId, functionId, resume);
+            int? prepareDimension = (int)function.Dimension;
+            int dimensionIndex = -1;
+            if (prepareDimension is null)
+            {
+                for (int i = 0; i < paramsData.Length; i++)
+                {
+                    if (paramsData[i].Name == "Dimension")
+                    {
+                        paramsData[i].LowerBoundary = 2;
+                        paramsData[i].UpperBoundary = 27;
+                        dimensionIndex = i;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                for (int i = 0; i < paramsData.Length; i++)
+                {
+                    if (paramsData[i].Name == "Dimension")
+                    {
+                        paramsData[i].LowerBoundary = (int)prepareDimension;
+                        paramsData[i].UpperBoundary = (int)prepareDimension;
+                        dimensionIndex = i;
+                        break;
+                    }
+                }
+            }
+            double[] paramsValue = InitializeAlgorithmParams(paramsData, sessionId, algorithmId, function.Id, resume);
             int iteration = 1;
             List<AlgorithmBestParameters> bestParameters = new List<AlgorithmBestParameters>();
+
+            if (dimensionIndex == -1) throw new NotFoundException("Brak parametru Dimension w ParamsInfo");
             while (true)
             {
                 if (cancellationToken.IsCancellationRequested) break;
                 List<AlgorithmBestParameters> bestIter = new();
+                
+                double[,] domainArray = GetFunctionDomain(function, (int)paramsValue[dimensionIndex]);
                 for (int iter = 0; iter < 10; iter++)
                 {
                     optimizationAlgorithm.Solve(fitnessFunction, domainArray, paramsValue, resume);
@@ -339,13 +352,18 @@ namespace Metaheuristic_system.Services
                 }
                 AlgorithmBestParameters currentParams = bestIter.OrderBy(param => param.FBest).First();
                 bestParameters.Add(currentParams);
-                TestResults testResults = new() { TestId = tests.Id, XBest = String.Join(';', optimizationAlgorithm.XBest), FBest = optimizationAlgorithm.FBest, Parameters = String.Join(';', paramsValue) };
+                Dictionary<string, double> resultsDict = new Dictionary<string, double>();
+                for (int i = 0; i < paramsData.Length; i++)
+                {
+                    resultsDict[paramsData[i].Name] = currentParams.BestParams[i];
+                }
+                TestResults testResults = new() { TestId = tests.Id, XBest = String.Join(';', optimizationAlgorithm.XBest), FBest = optimizationAlgorithm.FBest, Parameters = JsonConvert.SerializeObject(resultsDict) };
                 dbContext.TestResults.Add(testResults);
                 double progress = iteration / Math.Pow(5, paramsValue.Length);
                 tests.Progress = progress;
                 dbContext.SaveChanges();
                 iteration++;
-                paramsValue = IncreaseParams(paramsValue, paramsData);
+                paramsValue = IncreaseParams(paramsValue, paramsData, dimensionIndex);
                 if (paramsValue[0] > paramsData[0].UpperBoundary)
                 {
                     break;
@@ -369,16 +387,29 @@ namespace Metaheuristic_system.Services
             return bestResults;
         }
 
-        private double[] IncreaseParams(double[] paramsValue, dynamic paramsData)
+        private double[] IncreaseParams(double[] paramsValue, dynamic paramsData, int dimensionIndex)
         {
             for(int i = paramsValue.Length-1 ; i >= 0; i--)
             {
-                paramsValue[i] += (paramsData[i].UpperBoundary + paramsData[i].LowerBoundary) / 5;
-                if (paramsValue[i] < paramsData[i].UpperBoundary) break;
+                if(i == dimensionIndex)
+                {
+                    paramsValue[i] += (int)(paramsData[i].UpperBoundary - paramsData[i].LowerBoundary) / 5;
+                    if (paramsValue[i] < paramsData[i].UpperBoundary) break;
+                    else
+                    {
+                        paramsValue[i] = paramsData[i].LowerBoundary;
+                    }
+                }
                 else
                 {
-                    paramsValue[i] = paramsData[i].LowerBoundary;
+                    paramsValue[i] += (paramsData[i].UpperBoundary - paramsData[i].LowerBoundary) / 5;
+                    if (paramsValue[i] < paramsData[i].UpperBoundary) break;
+                    else
+                    {
+                        paramsValue[i] = paramsData[i].LowerBoundary;
+                    }
                 }
+
             }
 
             return paramsValue;
@@ -421,8 +452,8 @@ namespace Metaheuristic_system.Services
             if(resume)
             {
                 var testId = dbContext.Tests.FirstOrDefault(t => t.SessionId == sessionId && t.AlgorithmId == algorithmId && t.FitnessFunctionId == functionId).Id;
-                var parameters = dbContext.TestResults.LastOrDefault(t => t.TestId == testId).Parameters.Split(";");
-                paramsValue = parameters.Select(double.Parse).ToArray();
+                var parameters = JsonConvert.DeserializeObject<Dictionary<string, double>>(dbContext.TestResults.LastOrDefault(t => t.TestId == testId).Parameters);
+                paramsValue = parameters.Values.ToArray();
             }
             else
             {
