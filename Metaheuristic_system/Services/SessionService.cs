@@ -115,11 +115,15 @@ namespace Metaheuristic_system.Services
                 throw new InvalidArgumentException($"Sesja o id {id} nie została zakończona.");
             }
             var tests = session.Tests;
-
+            var directoryPath = "./summary";
+            var pdfFilePath = $"{directoryPath}/{id}.pdf";
+            var fullFilePath = Path.GetFullPath(pdfFilePath);
+            if (File.Exists(fullFilePath))
+            {
+                return fullFilePath;
+            }
             using (var stream = new MemoryStream())
             {
-                var directoryPath = "./summary";
-                var pdfFilePath = $"{directoryPath}/{id}.pdf";
                 var document = new Document();
                 PdfWriter.GetInstance(document, new FileStream(pdfFilePath, FileMode.Create));
                 document.Open();
@@ -222,7 +226,6 @@ namespace Metaheuristic_system.Services
                 {
                     Directory.CreateDirectory(directoryPath);
                 }
-                var fullFilePath = Path.GetFullPath(pdfFilePath);
                 return fullFilePath;
             }
 
