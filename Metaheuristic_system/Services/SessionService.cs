@@ -119,6 +119,10 @@ namespace Metaheuristic_system.Services
             var directoryPath = "./summary";
             var pdfFilePath = $"{directoryPath}/{id}.pdf";
             var fullFilePath = Path.GetFullPath(pdfFilePath);
+            if (!Directory.Exists(directoryPath))
+            {
+                Directory.CreateDirectory(directoryPath);
+            }
             if (File.Exists(fullFilePath))
             {
                 return fullFilePath;
@@ -219,14 +223,8 @@ namespace Metaheuristic_system.Services
                             document.Add(new Paragraph(" "));
                         }
                     }
-
-                   
                 }
                 document.Close();    
-                if (!Directory.Exists(directoryPath))
-                {
-                    Directory.CreateDirectory(directoryPath);
-                }
                 return fullFilePath;
             }
 
