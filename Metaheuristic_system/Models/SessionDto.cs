@@ -2,8 +2,8 @@
 {
     public class SessionDto
     {
-        public int sessionId { get; set; }
-        public string state { get; set; }
-        public List<TestsDto> tests { get; set; }
+        public int SessionId { get; set; }
+        public string State { get; set; }
+        public List<TestsDto> Tests { get; set; }
     }
 }

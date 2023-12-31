@@ -47,13 +47,14 @@ namespace Metaheuristic_system.Services
                     })
                     .ToList();
 
-                var pausedSessionDto = new SessionDto
+                var sessionDto = new SessionDto
                 {
-                    sessionId = session.Id,
-                    tests = testsForSession
+                    SessionId = session.Id,
+                    Tests = testsForSession,
+                    State = session.State,
                 };
 
-                sessionDtos.Add(pausedSessionDto);
+                sessionDtos.Add(sessionDto);
             }
 
             return sessionDtos;
@@ -80,8 +81,9 @@ namespace Metaheuristic_system.Services
 
                 var pausedSessionDto = new SessionDto
                 {
-                    sessionId = session.Id,
-                    tests = testsForSession
+                    SessionId = session.Id,
+                    Tests = testsForSession,
+                    State = session.State,
                 };
 
                 sessionDtos.Add(pausedSessionDto);
