@@ -20,8 +20,8 @@ namespace Metaheuristic_system.Controllers
             var sessions = sessionService.GetAll();
             return Ok(sessions);
         }
-        [HttpGet]
-        public ActionResult GetAllByState([FromQuery] string state)
+        [HttpGet("{state}")]
+        public ActionResult GetAllByState([FromRoute] string state)
         {
             var sessions = sessionService.GetAllByState(state);
             return Ok(sessions);

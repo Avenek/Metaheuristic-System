@@ -15,7 +15,7 @@ namespace Metaheuristic_system.Controllers
             this.taskService = taskService;
         }
 
-        [HttpGet("algorithm/{id}")]
+        [HttpPost("algorithm/{id}")]
         public async Task<IActionResult> TestAlgorithm([FromRoute] int id, [FromBody] int[] fitnessFunctionIds, CancellationToken cancellationToken)
         {
             var results = await taskService.TestAlgorithm(id, fitnessFunctionIds, cancellationToken);
@@ -23,14 +23,14 @@ namespace Metaheuristic_system.Controllers
             return Ok(results);
         }
 
-        [HttpGet("fitnessFunction/{id}")]
+        [HttpPost("fitnessFunction/{id}")]
         public async Task<IActionResult> TestFitnessFunction([FromRoute] int id, [FromBody] int[] algorithmIds, CancellationToken cancellationToken)
         {
             var results = await taskService.TestFitnessFunction(id, algorithmIds, cancellationToken);
 
             return Ok(results);
         }
-        [HttpGet("{id}")]
+        [HttpPost("{id}")]
         public async Task<IActionResult> ResumeSession([FromRoute] int id, [FromQuery] bool resume, CancellationToken cancellationToken)
         {
             if (resume)

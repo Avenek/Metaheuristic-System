@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Metaheuristic_system")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+44512823f2a1af280902d7e17b10d6797c1e3cd0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+494428d92a8d8ebbc2d13a095f4a8bb157f70b93")]
 [assembly: System.Reflection.AssemblyProductAttribute("Metaheuristic_system")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Metaheuristic_system")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

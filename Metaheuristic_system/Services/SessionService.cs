@@ -37,7 +37,6 @@ namespace Metaheuristic_system.Services
             var sessionDtos = new List<SessionDto>();
             foreach (var session in sessions)
             {
-                // Pobierz powiązane testy dla sesji
                 var testsForSession = dbContext.Tests
                     .Where(t => t.SessionId == session.Id)
                     .Select(t => new TestsDto
