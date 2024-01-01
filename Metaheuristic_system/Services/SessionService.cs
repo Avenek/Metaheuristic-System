@@ -7,6 +7,7 @@ using Metaheuristic_system.Models;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Security.AccessControl;
 using System.Security.Principal;
@@ -242,7 +243,6 @@ namespace Metaheuristic_system.Services
                     }
                 }
                 document.Close();
-                
             }
             return $"/{id}.pdf";
         }
