@@ -119,7 +119,7 @@ namespace Metaheuristic_system.Services
             //    throw new InvalidArgumentException($"Sesja o id {id} nie została zakończona.");
             //}
             var tests = session.Tests;
-            var directoryPath = "./summary";
+            var directoryPath = "./wwwroot";
             if (!Directory.Exists(directoryPath))
             {
                 Directory.CreateDirectory(directoryPath);
@@ -244,7 +244,7 @@ namespace Metaheuristic_system.Services
                 document.Close();
                 
             }
-            return fullFilePath;
+            return $"/{id}.pdf";
         }
     }
 }

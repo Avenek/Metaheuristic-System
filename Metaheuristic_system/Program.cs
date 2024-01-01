@@ -44,8 +44,8 @@ namespace Metaheuristic_system
             });
             builder.Services.AddSwaggerGen();
             builder.Services.AddTransient<DbContextFactory>();
-
             var app = builder.Build();
+            app.UseStaticFiles();
             app.UseCors("FrontEndClient");
             var algortihmScope = app.Services.CreateScope();
             var algorithmSeeder = algortihmScope.ServiceProvider.GetRequiredService<AlgorithmSeeder>();
@@ -62,7 +62,6 @@ namespace Metaheuristic_system
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-            app.UseStaticFiles();
 
             app.MapControllers();
 

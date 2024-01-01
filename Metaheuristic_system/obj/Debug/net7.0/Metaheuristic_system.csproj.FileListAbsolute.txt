@@ -113,3 +113,4 @@ C:\Users\Jakub\Desktop\Programowanie\Metaheuristic_System\Metaheuristic_system\b
 C:\Users\Jakub\Desktop\Programowanie\Metaheuristic_System\Metaheuristic_system\bin\Debug\net7.0\itext.svg.dll
 C:\Users\Jakub\Desktop\Programowanie\Metaheuristic_System\Metaheuristic_system\bin\Debug\net7.0\itext.commons.dll
 C:\Users\Jakub\Desktop\Programowanie\Metaheuristic_System\Metaheuristic_system\bin\Debug\net7.0\Microsoft.DotNet.PlatformAbstractions.dll
+C:\Users\Jakub\Desktop\Programowanie\Metaheuristic_System\Metaheuristic_system\bin\Debug\net7.0\Metaheuristic_system.staticwebassets.runtime.json

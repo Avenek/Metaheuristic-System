@@ -1,11 +1,19 @@
 {
   "Version": 1,
-  "Hash": "Ge88U3Upopa4xwYUepRPe3K2+syjK9WCoCA4qFlsJWg=",
+  "Hash": "3XbJe9Hnk18eU9GuH9gEE5FHeVifV9VB3JE9yTXgCqE=",
   "Source": "Metaheuristic_system",
   "BasePath": "_content/Metaheuristic_system",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
-  "DiscoveryPatterns": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "Metaheuristic_system\\wwwroot",
+      "Source": "Metaheuristic_system",
+      "ContentRoot": "C:\\Users\\Jakub\\Desktop\\Programowanie\\Metaheuristic_System\\Metaheuristic_system\\wwwroot\\",
+      "BasePath": "_content/Metaheuristic_system",
+      "Pattern": "**"
+    }
+  ],
   "Assets": []
 }
