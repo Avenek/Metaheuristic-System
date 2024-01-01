@@ -129,7 +129,7 @@ namespace Metaheuristic_system.Services
             var fullFilePath = Path.GetFullPath(pdfFilePath);
             if (File.Exists(fullFilePath))
             {
-                return fullFilePath;
+                return $"/{id}.pdf";
             }
             using (var stream = new MemoryStream())
             {
