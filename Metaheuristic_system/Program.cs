@@ -38,7 +38,8 @@ namespace Metaheuristic_system
                 options.AddPolicy("FrontEndClient", b =>
                     b.AllowAnyMethod()
                         .AllowAnyHeader()
-                        .WithOrigins(builder.Configuration["AllowedOrigins"])
+                         .SetIsOriginAllowed(origin => true)
+                          //.WithOrigins(builder.Configuration["AllowedOrigins"])
                 );
             });
             builder.Services.AddSwaggerGen();
@@ -61,7 +62,7 @@ namespace Metaheuristic_system
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
+            app.UseStaticFiles();
 
             app.MapControllers();
 

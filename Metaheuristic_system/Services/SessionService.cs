@@ -6,7 +6,10 @@ using Metaheuristic_system.Exceptions;
 using Metaheuristic_system.Models;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using System.Diagnostics;
 using System.Linq;
+using System.Security.AccessControl;
+using System.Security.Principal;
 
 
 
@@ -111,18 +114,18 @@ namespace Metaheuristic_system.Services
             {
                 throw new NotFoundException($"Nie odnaleziono sesji o id {id}.");
             }
-            if(session.State != "FINISHED")
-            {
-                throw new InvalidArgumentException($"Sesja o id {id} nie została zakończona.");
-            }
+            //if(session.State != "FINISHED")
+            //{
+            //    throw new InvalidArgumentException($"Sesja o id {id} nie została zakończona.");
+            //}
             var tests = session.Tests;
             var directoryPath = "./summary";
-            var pdfFilePath = $"{directoryPath}/{id}.pdf";
-            var fullFilePath = Path.GetFullPath(pdfFilePath);
             if (!Directory.Exists(directoryPath))
             {
                 Directory.CreateDirectory(directoryPath);
             }
+            var pdfFilePath = $"{directoryPath}/{id}.pdf";
+            var fullFilePath = Path.GetFullPath(pdfFilePath);
             if (File.Exists(fullFilePath))
             {
                 return fullFilePath;
@@ -130,7 +133,21 @@ namespace Metaheuristic_system.Services
             using (var stream = new MemoryStream())
             {
                 var document = new Document();
-                PdfWriter.GetInstance(document, new FileStream(pdfFilePath, FileMode.Create));
+                PdfWriter.GetInstance(document, new FileStream(fullFilePath, FileMode.Create));
+                var process = new Process
+                {
+                    StartInfo = new ProcessStartInfo
+                    {
+                        FileName = "chmod",
+                        Arguments = $"a+rw {fullFilePath}",
+                        RedirectStandardOutput = true,
+                        UseShellExecute = false,
+                        CreateNoWindow = true
+                    }
+                };
+
+                process.Start();
+                process.WaitForExit();
                 document.Open();
                 document.Add(new Paragraph($"Wyniki testu dla sesji: {id}"));
                 document.Add(new Paragraph(" "));
@@ -224,10 +241,10 @@ namespace Metaheuristic_system.Services
                         }
                     }
                 }
-                document.Close();    
-                return fullFilePath;
+                document.Close();
+                
             }
-
+            return fullFilePath;
         }
     }
 }

@@ -131,7 +131,6 @@ namespace Metaheuristic_system.Services
             ReflectionValidator.ImplementsInterface(interfaceType, typeof(IFitnessFunction)) && type.IsClass && type.Name == newFitnessFunctionDto.Name));
             if (optimizationType == null)
             {
-                File.Delete(fullPath);
                 throw new NotImplementInterfaceException("Zawartość pliku nie implementuje wymaganego interfejsu.");
             }
 

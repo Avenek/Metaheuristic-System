@@ -37,7 +37,9 @@ namespace Metaheuristic_system.Controllers
         public ActionResult GeneratePdf([FromRoute] int id)
         {
             string link = sessionService.GeneratePdf(id);
-            return Ok(link);
+            var baseUri = $"{Request.Scheme}://{Request.Host}";;
+            var fileUrl = new Uri(new Uri(baseUri), link).AbsoluteUri;
+            return Ok(fileUrl);
         }
     }
 }
