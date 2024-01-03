@@ -65,7 +65,7 @@ namespace Metaheuristic_system.Services
             dbContext.SaveChanges();
             string path = "/dll/fitnessFunction";
             string fileName = fitnessFunction.FileName;
-            if (dbContext.FitnessFunctions.Any(f => f.FileName == fileName)){
+            if (!dbContext.FitnessFunctions.Any(f => f.FileName == fileName)){
                 string fullPath = $"{path}/{fileName}";
                 File.Delete(fullPath);
             }
