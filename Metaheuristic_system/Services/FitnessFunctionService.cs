@@ -61,12 +61,14 @@ namespace Metaheuristic_system.Services
             {
                 throw new IsNotRemoveableException("Funkcji o podanym id nie można usunąć.");
             }
-            string path = "/dll/fitnessFunction";
-            string fileName = fitnessFunction.FileName;
-            string fullPath = $"{path}/{fileName}";
-            File.Delete(fullPath);
             dbContext.FitnessFunctions.Remove(fitnessFunction);
             dbContext.SaveChanges();
+            string path = "/dll/fitnessFunction";
+            string fileName = fitnessFunction.FileName;
+            if (dbContext.FitnessFunctions.Any(f => f.FileName == fileName)){
+                string fullPath = $"{path}/{fileName}";
+                File.Delete(fullPath);
+            }
         }
 
         public void UpdateFitnessFunctionById(int id, UpdateFitnessFunctionDto updatedFunction)
