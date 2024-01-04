@@ -305,7 +305,7 @@ namespace Metaheuristic_system.Services
         private ResultsDto InvokeTest(dynamic optimizationAlgorithm, dynamic fitnessFunction, Tests tests, int sessionId, int algorithmId, FitnessFunction function, CancellationToken cancellationToken, bool resume, SystemDbContext dbContext)
         {
             dynamic paramsData = optimizationAlgorithm.ParamsInfo;
-            int? prepareDimension = (int)function.Dimension;
+            int? prepareDimension = function.Dimension;
             int dimensionIndex = -1;
             if (prepareDimension is null)
             {
