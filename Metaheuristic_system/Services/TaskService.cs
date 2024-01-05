@@ -333,7 +333,7 @@ namespace Metaheuristic_system.Services
                     }
                 }
             }
-            double[] paramsValue = InitializeAlgorithmParams(paramsData, sessionId, algorithmId, function.Id, resume);
+            double[] paramsValue = InitializeAlgorithmParams(paramsData, sessionId, algorithmId, function.Id, dbContext, resume);
             int iteration = 1;
             List<AlgorithmBestParameters> bestParameters = new List<AlgorithmBestParameters>();
 
@@ -446,13 +446,13 @@ namespace Metaheuristic_system.Services
             }
             return domainArray;
         }
-        private double[] InitializeAlgorithmParams(dynamic paramsData, int sessionId, int algorithmId, int functionId, bool resume)
+        private double[] InitializeAlgorithmParams(dynamic paramsData, int sessionId, int algorithmId, int functionId, SystemDbContext dbContext, bool resume)
         {
             double[] paramsValue = new double[paramsData.Length];
             if(resume)
             {
                 var testId = dbContext.Tests.FirstOrDefault(t => t.SessionId == sessionId && t.AlgorithmId == algorithmId && t.FitnessFunctionId == functionId).Id;
-                var parameters = JsonConvert.DeserializeObject<Dictionary<string, double>>(dbContext.TestResults.LastOrDefault(t => t.TestId == testId).Parameters);
+                var parameters = JsonConvert.DeserializeObject<Dictionary<string, double>>(dbContext.TestResults.OrderBy(t => t.Id).LastOrDefault(t => t.TestId == testId).Parameters);
                 paramsValue = parameters.Values.ToArray();
             }
             else
@@ -470,6 +470,7 @@ namespace Metaheuristic_system.Services
         {
             List<ResultsDto> results;
             var session = dbContext.Sessions.FirstOrDefault(s => s.Id == sessionId);
+            if(session.State != "SUSPENDED") throw new InvalidArgumentException("Nie można wznowić sesji, która nie jest wstrzymana!");
             string[] algorithmIds = session.AlgorithmIds.Split(";");
             string[] functionIds = session.FitnessFunctionIds.Split(";");
             if (algorithmIds.Length == 1 )
