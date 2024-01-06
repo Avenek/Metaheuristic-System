@@ -92,7 +92,7 @@ namespace Metaheuristic_system.Services
             }
             else
             {
-                throw new NotImplementInterfaceException("Zawartość pliku nie implementuje wymaganego interfejsu.");
+                throw new BadRequestException("Zawartość pliku nie implementuje wymaganego interfejsu.");
             }
         }
 
@@ -115,11 +115,20 @@ namespace Metaheuristic_system.Services
                         using (var dbContext = dbContextFactory.CreateDbContext())
                         {
                             dynamic optimizationAlgorithm = Activator.CreateInstance(algorithmType);
-                            Tests tests = new() { SessionId = sessionId, AlgorithmId = algorithmId, FitnessFunctionId = f, Progress = 0 };
-                            await dbContext.Tests.AddAsync(tests);
-                            await dbContext.SaveChangesAsync();
+                            Tests tests;
+                            if (!resume)
+                            {
+                                tests = new() { SessionId = sessionId, AlgorithmId = algorithmId, FitnessFunctionId = f, Progress = 0 };
+                                await dbContext.Tests.AddAsync(tests);
+                                await dbContext.SaveChangesAsync();
+                                tests.FitnessFunctionId = f;
+                            }
+                            else
+                            {
+                                tests = await dbContext.Tests.FirstOrDefaultAsync(t => t.SessionId == sessionId && t.FitnessFunctionId == f);
+                            }
+                            
                             if (cancellationToken.IsCancellationRequested) return;
-                            tests.FitnessFunctionId = f;
                             dynamic paramsData = optimizationAlgorithm.ParamsInfo;
                             dynamic fitnessFunction = Activator.CreateInstance(functionTypes[f]);
                             var function = dbContext.FitnessFunctions.FirstOrDefault(function => function.Id == f);
@@ -231,7 +240,7 @@ namespace Metaheuristic_system.Services
             }
             else
             {
-                throw new NotImplementInterfaceException("Zawartość pliku nie implementuje wymaganego interfejsu.");
+                throw new BadRequestException("Zawartość pliku nie implementuje wymaganego interfejsu.");
             }
         }
 
@@ -247,15 +256,24 @@ namespace Metaheuristic_system.Services
 
                 await semaphore.WaitAsync();
                 if (cancellationToken.IsCancellationRequested) return null;
-                Tests tests = new() { SessionId = sessionId, AlgorithmId = a, FitnessFunctionId = fitnessFunctionId, Progress = 0 };
-                dbContext.Tests.Add(tests);
-                dbContext.SaveChanges();
                 solvingTasks.Add(Task.Run(async () =>
                 {
                     try
                     {
                         using (var dbContext = dbContextFactory.CreateDbContext())
                         {
+                            Tests tests;
+                            if (!resume)
+                            {
+                                tests = new() { SessionId = sessionId, AlgorithmId = a, FitnessFunctionId = fitnessFunctionId, Progress = 0 };
+                                await dbContext.Tests.AddAsync(tests);
+                                await dbContext.SaveChangesAsync();
+                                tests.AlgorithmId = a;
+                            }
+                            else
+                            {
+                                tests = await dbContext.Tests.FirstOrDefaultAsync(t => t.SessionId == sessionId && t.AlgorithmId == a);
+                            }
                             dynamic functionInstance = Activator.CreateInstance(functionType);
                             if (cancellationToken.IsCancellationRequested) return;
                             dynamic optimizationAlgorithm = Activator.CreateInstance(algorithmTypes[a]);
@@ -470,7 +488,8 @@ namespace Metaheuristic_system.Services
         {
             List<ResultsDto> results;
             var session = dbContext.Sessions.FirstOrDefault(s => s.Id == sessionId);
-            if(session.State != "SUSPENDED") throw new InvalidArgumentException("Nie można wznowić sesji, która nie jest wstrzymana!");
+            if (dbContext.Sessions.Any(s => s.State == "RUNNING")) throw new BadRequestException("Nie można przeprowadzać naraz dwóch testów!");
+            if(session.State != "SUSPENDED") throw new BadRequestException("Nie można wznowić sesji, która nie jest wstrzymana!");
             string[] algorithmIds = session.AlgorithmIds.Split(";");
             string[] functionIds = session.FitnessFunctionIds.Split(";");
             if (algorithmIds.Length == 1 )

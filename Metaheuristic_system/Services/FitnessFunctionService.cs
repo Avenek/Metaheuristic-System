@@ -59,7 +59,7 @@ namespace Metaheuristic_system.Services
             }
             if (!fitnessFunction.Removeable)
             {
-                throw new IsNotRemoveableException("Funkcji o podanym id nie można usunąć.");
+                throw new BadRequestException("Funkcji o podanym id nie można usunąć.");
             }
             dbContext.FitnessFunctions.Remove(fitnessFunction);
             dbContext.SaveChanges();
@@ -78,10 +78,6 @@ namespace Metaheuristic_system.Services
             {
                 throw new NotFoundException($"Nie odnaleziono funkcji o id {id}.");
             }
-            if (updatedFunction.Dimension < 0)
-            {
-                throw new NegativeDimension("Wymiar nie może być mniejszy od 0.");
-            }
             fitnessFunction.Dimension = updatedFunction.Dimension;
             string jsonDomain = JsonConvert.SerializeObject(updatedFunction.DomainArray);
             fitnessFunction.Domain = jsonDomain;
@@ -91,9 +87,9 @@ namespace Metaheuristic_system.Services
 
         public void UploadFitnessFunctionFile(IFormFile file)
         {
-            if (file.FileName.Length > 30) throw new TooLongNameException("Podano zbyt długą nazwę pliku.");
-            if (file == null || file.Name.Length == 0) throw new BadFileException("Napotkano problemy z plikiem.");
-            if (Path.GetExtension(file.FileName) != ".dll") throw new BadFileExtensionException("Plik posiada złe rozszerzenie.");
+            if (file.FileName.Length > 30) throw new BadRequestException("Podano zbyt długą nazwę pliku.");
+            if (file == null || file.Name.Length == 0) throw new BadRequestException("Napotkano problemy z plikiem.");
+            if (Path.GetExtension(file.FileName) != ".dll") throw new BadRequestException("Plik posiada złe rozszerzenie.");
             string path = "./dll/fitnessFunction";
 
             if (!Directory.Exists(path))
@@ -114,7 +110,7 @@ namespace Metaheuristic_system.Services
             if (optimizationType == null)
             {
                 File.Delete(fullPath);
-                throw new NotImplementInterfaceException("Zawartość pliku nie implementuje wymaganego interfejsu.");
+                throw new BadRequestException("Zawartość pliku nie implementuje wymaganego interfejsu.");
             }
 
         }
@@ -124,7 +120,6 @@ namespace Metaheuristic_system.Services
             string path = "./dll/fitnessFunction/";
             string fullPath = path + newFitnessFunctionDto.FileName;
             if (!File.Exists(path+newFitnessFunctionDto.FileName)) throw new NotFoundException("Nie odnaleziono wymaganego pliku.");
-            if (newFitnessFunctionDto.Name.Length > 30) throw new TooLongNameException("Podano zbyt długą nazwę funckji testowej.");
 
             FileLoader fileLoader = new(fullPath);
             fileLoader.Load();
@@ -133,9 +128,8 @@ namespace Metaheuristic_system.Services
             ReflectionValidator.ImplementsInterface(interfaceType, typeof(IFitnessFunction)) && type.IsClass && type.Name == newFitnessFunctionDto.Name));
             if (optimizationType == null)
             {
-                throw new NotImplementInterfaceException("Zawartość pliku nie implementuje wymaganego interfejsu.");
+                throw new BadRequestException("Zawartość pliku nie implementuje wymaganej klasy.");
             }
-
             var fitnessFunction = mapper.Map<FitnessFunction>(newFitnessFunctionDto);
             fitnessFunction.Removeable = true;
             dbContext.FitnessFunctions.Add(fitnessFunction);

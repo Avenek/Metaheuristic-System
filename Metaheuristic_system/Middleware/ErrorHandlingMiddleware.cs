@@ -23,55 +23,7 @@ namespace Metaheuristic_system.Middleware
                 context.Response.StatusCode = 404;
                 await context.Response.WriteAsync(e.Message);
             }
-            catch(TooLongNameException e)
-            {
-                logger.LogError(e, e.Message);
-                context.Response.StatusCode = 400;
-                await context.Response.WriteAsync(e.Message);
-            }
-            catch(IsNotRemoveableException e)
-            {
-                logger.LogError(e, e.Message);
-                context.Response.StatusCode = 400;
-                await context.Response.WriteAsync(e.Message);
-            }
-            catch (NegativeDimension e)
-            {
-                logger.LogError(e, e.Message);
-                context.Response.StatusCode = 400;
-                await context.Response.WriteAsync(e.Message);
-            }
-            catch (BadFileException e)
-            {
-                logger.LogError(e, e.Message);
-                context.Response.StatusCode = 400;
-                await context.Response.WriteAsync(e.Message);
-            }
-            catch (BadFileExtensionException e)
-            {
-                logger.LogError(e, e.Message);
-                context.Response.StatusCode = 400;
-                await context.Response.WriteAsync(e.Message);
-            }
-            catch(NotImplementInterfaceException e)
-            {
-                logger.LogError(e, e.Message);
-                context.Response.StatusCode = 400;
-                await context.Response.WriteAsync(e.Message);
-            }
-            catch(FileAlreadyExistException e)
-            {
-                logger.LogError(e, e.Message);
-                context.Response.StatusCode = 400;
-                await context.Response.WriteAsync(e.Message);
-            }
-            catch(MissingFileException e)
-            {
-                logger.LogError(e, e.Message);
-                context.Response.StatusCode = 400;
-                await context.Response.WriteAsync(e.Message);
-            }
-            catch (InvalidArgumentException e)
+            catch (BadRequestException e)
             {
                 logger.LogError(e, e.Message);
                 context.Response.StatusCode = 400;

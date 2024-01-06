@@ -1,6 +1,10 @@
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Metaheuristic_system.Entities;
 using Metaheuristic_system.MappingProfiles;
 using Metaheuristic_system.Middleware;
+using Metaheuristic_system.Models;
+using Metaheuristic_system.Models.Validators;
 using Metaheuristic_system.Seeders;
 using Metaheuristic_system.Services;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
@@ -18,7 +22,7 @@ namespace Metaheuristic_system
             var builder = WebApplication.CreateBuilder(args);
             builder.Host.UseNLog();
 
-            builder.Services.AddControllers();
+            builder.Services.AddControllers().AddFluentValidation();
             builder.Services.AddDbContext<SystemDbContext>(options =>
             {
                 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -31,6 +35,9 @@ namespace Metaheuristic_system
             builder.Services.AddScoped<IFitnessFunctionService, FitnessFunctionService>();
             builder.Services.AddScoped<ITaskService, TaskService>();
             builder.Services.AddScoped<ISessionService, SessionService>();
+            builder.Services.AddScoped<IValidator<AlgorithmDto>, AlgorithmDtoValidator>();
+            builder.Services.AddScoped<IValidator<FitnessFunctionDto>, FitnessFunctionDtoValidator>();
+            builder.Services.AddScoped<IValidator<UpdateFitnessFunctionDto>, UpdateFitnessFunctionDtoValidator>();
             builder.Services.AddAutoMapper(typeof(FitnessFunctionMappingProfile));
             builder.Services.AddAutoMapper(typeof(AlgorithmMappingProfile));
             builder.Services.AddCors(options =>

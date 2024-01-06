@@ -5,7 +5,6 @@ using Metaheuristic_system.Models;
 using Metaheuristic_system.Reflection;
 using Metaheuristic_system.ReflectionRequiredInterfaces;
 using Metaheuristic_system.Validators;
-using System.Reflection;
 
 namespace Metaheuristic_system.Services
 {
@@ -58,7 +57,7 @@ namespace Metaheuristic_system.Services
             }
             if(newName.Length > 30)
             {
-                throw new TooLongNameException("Podano zbyt długą nazwę.");
+                throw new BadRequestException("Podano zbyt długą nazwę.");
             }
             algorithm.Name = newName;
             dbContext.SaveChanges();
@@ -73,7 +72,7 @@ namespace Metaheuristic_system.Services
             }
             if (!algorithm.Removeable)
             {
-                throw new IsNotRemoveableException("Algorytmu o podanym id nie można usunąć.");
+                throw new BadRequestException("Algorytmu o podanym id nie można usunąć.");
             }
             string path = "/dll/algorithm";
             string fileName = algorithm.FileName;
@@ -85,11 +84,9 @@ namespace Metaheuristic_system.Services
 
         public int AddAlgorithm(string algorithmName, IFormFile file)
         {
-            if (algorithmName.Length > 30) throw new TooLongNameException("Podano zbyt długą nazwę algoryutmu.");
-            if (file.FileName.Length > 30) throw new TooLongNameException("Podano zbyt długą nazwę pliku.");
-            if (file == null || file.Name.Length == 0) throw new BadFileException("Napotkano problemy z plikiem.");
-            if (Path.GetExtension(file.FileName) != ".dll") throw new BadFileExtensionException($"Plik posiada złe rozszerzenie.");
-            if(File.Exists("./dll/algorithm/" + file.FileName)) throw new FileAlreadyExistException("Plik o podanej nazwie już istnieje na serwerze.");
+            if (file == null || file.Name.Length == 0) throw new BadRequestException("Napotkano problemy z plikiem.");
+            if (Path.GetExtension(file.FileName) != ".dll") throw new BadRequestException($"Plik posiada złe rozszerzenie.");
+            if(File.Exists("./dll/algorithm/" + file.FileName)) throw new BadRequestException("Plik o podanej nazwie już istnieje na serwerze.");
             string path = "./dll/algorithm";
             if (!Directory.Exists(path))
             {
@@ -111,7 +108,7 @@ namespace Metaheuristic_system.Services
             if (optimizationType == null)
             {
                 File.Delete(fullPath);
-                throw new NotImplementInterfaceException("Zawartość pliku nie implementuje wymaganego interfejsu.");
+                throw new BadRequestException("Zawartość pliku nie implementuje wymaganego interfejsu.");
             }
             var algorithm = new Algorithm() { Name = algorithmName, FileName = fileName, Removeable = true };
             dbContext.Algorithms.Add(algorithm);

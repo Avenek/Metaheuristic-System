@@ -1,0 +1,41 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Users\\Jakub\\Desktop\\Programowanie\\Metaheuristic_System\\Metaheuristic_system\\wwwroot\\10.pdf",
+      "PackagePath": "staticwebassets\\10.pdf"
+    },
+    {
+      "Id": "C:\\Users\\Jakub\\Desktop\\Programowanie\\Metaheuristic_System\\Metaheuristic_system\\wwwroot\\4.pdf",
+      "PackagePath": "staticwebassets\\4.pdf"
+    },
+    {
+      "Id": "C:\\Users\\Jakub\\Desktop\\Programowanie\\Metaheuristic_System\\Metaheuristic_system\\wwwroot\\5.pdf",
+      "PackagePath": "staticwebassets\\5.pdf"
+    },
+    {
+      "Id": "C:\\Users\\Jakub\\Desktop\\Programowanie\\Metaheuristic_System\\Metaheuristic_system\\wwwroot\\7.pdf",
+      "PackagePath": "staticwebassets\\7.pdf"
+    },
+    {
+      "Id": "C:\\Users\\Jakub\\Desktop\\Programowanie\\Metaheuristic_System\\Metaheuristic_system\\wwwroot\\9.pdf",
+      "PackagePath": "staticwebassets\\9.pdf"
+    },
+    {
+      "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.Metaheuristic_system.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.build.Metaheuristic_system.props",
+      "PackagePath": "build\\Metaheuristic_system.props"
+    },
+    {
+      "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.buildMultiTargeting.Metaheuristic_system.props",
+      "PackagePath": "buildMultiTargeting\\Metaheuristic_system.props"
+    },
+    {
+      "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.buildTransitive.Metaheuristic_system.props",
+      "PackagePath": "buildTransitive\\Metaheuristic_system.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

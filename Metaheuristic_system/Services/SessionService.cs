@@ -67,7 +67,7 @@ namespace Metaheuristic_system.Services
         public IEnumerable<SessionDto> GetAllByState(string state)
         {
             string[] states = new string[] { "RUNNING, SUSPENDED, FINISHED" };
-            if (!states.Contains(state)) throw new InvalidArgumentException("Podano niedozwolony typ.");
+            if (!states.Contains(state)) throw new BadRequestException("Podano niedozwolony typ.");
             var sessions = dbContext.Sessions.Where(s => s.State == state).ToList();
             var sessionDtos = new List<SessionDto>();
             foreach (var session in sessions)
@@ -115,10 +115,10 @@ namespace Metaheuristic_system.Services
             {
                 throw new NotFoundException($"Nie odnaleziono sesji o id {id}.");
             }
-            //if(session.State != "FINISHED")
-            //{
-            //    throw new InvalidArgumentException($"Sesja o id {id} nie została zakończona.");
-            //}
+            if(session.State != "FINISHED")
+            {
+                throw new BadRequestException($"Sesja o id {id} nie została zakończona.");
+            }
             var tests = session.Tests;
             var directoryPath = "./wwwroot";
             if (!Directory.Exists(directoryPath))
@@ -135,20 +135,20 @@ namespace Metaheuristic_system.Services
             {
                 var document = new Document();
                 PdfWriter.GetInstance(document, new FileStream(fullFilePath, FileMode.Create));
-                var process = new Process
-                {
-                    StartInfo = new ProcessStartInfo
-                    {
-                        FileName = "chmod",
-                        Arguments = $"a+rw {fullFilePath}",
-                        RedirectStandardOutput = true,
-                        UseShellExecute = false,
-                        CreateNoWindow = true
-                    }
-                };
+                //var process = new Process
+                //{
+                //    StartInfo = new ProcessStartInfo
+                //    {
+                //        FileName = "chmod",
+                //        Arguments = $"a+rw {fullFilePath}",
+                //        RedirectStandardOutput = true,
+                //        UseShellExecute = false,
+                //        CreateNoWindow = true
+                //    }
+                //};
 
-                process.Start();
-                process.WaitForExit();
+                //process.Start();
+                //process.WaitForExit();
                 document.Open();
                 document.Add(new Paragraph($"Wyniki testu dla sesji: {id}"));
                 document.Add(new Paragraph(" "));

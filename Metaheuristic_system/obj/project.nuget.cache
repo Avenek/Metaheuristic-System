@@ -1,12 +1,15 @@
 {
   "version": 2,
-  "dgSpecHash": "A7aL/KIwnjchUEoVl4PAbB7YMZ544UlE9pNftKThIpNIUMBkLoPKcaYQ+HepDPWUwNWvsM83hQDI67l9ocY3gg==",
+  "dgSpecHash": "zd/SBhuiM+yN6NdxFuBzfEaIhRE56G+FmR5Dlb0tusmdCnZ9MhgeLl+2rcyiTq32mVulTck69yIeF5TI7obXpQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\Jakub\\Desktop\\Programowanie\\Metaheuristic_System\\Metaheuristic_system\\Metaheuristic_system.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Jakub\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "C:\\Users\\Jakub\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",
     "C:\\Users\\Jakub\\.nuget\\packages\\bouncycastle\\1.8.9\\bouncycastle.1.8.9.nupkg.sha512",
+    "C:\\Users\\Jakub\\.nuget\\packages\\fluentvalidation\\11.5.1\\fluentvalidation.11.5.1.nupkg.sha512",
+    "C:\\Users\\Jakub\\.nuget\\packages\\fluentvalidation.aspnetcore\\11.3.0\\fluentvalidation.aspnetcore.11.3.0.nupkg.sha512",
+    "C:\\Users\\Jakub\\.nuget\\packages\\fluentvalidation.dependencyinjectionextensions\\11.5.1\\fluentvalidation.dependencyinjectionextensions.11.5.1.nupkg.sha512",
     "C:\\Users\\Jakub\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\Jakub\\.nuget\\packages\\itext\\8.0.2\\itext.8.0.2.nupkg.sha512",
     "C:\\Users\\Jakub\\.nuget\\packages\\itext.commons\\8.0.2\\itext.commons.8.0.2.nupkg.sha512",
