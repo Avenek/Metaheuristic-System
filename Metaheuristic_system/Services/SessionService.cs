@@ -41,20 +41,22 @@ namespace Metaheuristic_system.Services
             var sessionDtos = new List<SessionDto>();
             foreach (var session in sessions)
             {
-                var testsForSession = dbContext.Tests
-                    .Where(t => t.SessionId == session.Id)
-                    .Select(t => new TestsDto
-                    {
-                        AlgorithmId = t.AlgorithmId,
-                        FitnessFunctionId = t.FitnessFunctionId,
-                        Progress = t.Progress
-                    })
-                    .ToList();
+                List<string> algorithms = new();
+                List<string> fitnessFunctions = new();
+                foreach(var algorithmId in session.AlgorithmIds)
+                {
+                    algorithms.Add(dbContext.Algorithms.FirstOrDefault(a => a.Id == algorithmId).Name);
+                }
+                foreach(var functionId in session.FitnessFunctionIds)
+                {
+                    fitnessFunctions.Add(dbContext.FitnessFunctions.FirstOrDefault(f => f.Id == functionId).Name);
+                }
 
                 var sessionDto = new SessionDto
                 {
                     SessionId = session.Id,
-                    Tests = testsForSession,
+                    Algorithms = algorithms,
+                    FitnessFunctions = fitnessFunctions,
                     State = session.State,
                 };
 
@@ -72,25 +74,27 @@ namespace Metaheuristic_system.Services
             var sessionDtos = new List<SessionDto>();
             foreach (var session in sessions)
             {
-                // Pobierz powiązane testy dla sesji
-                var testsForSession = dbContext.Tests
-                    .Where(t => t.SessionId == session.Id)
-                    .Select(t => new TestsDto
-                    {
-                        AlgorithmId = t.AlgorithmId,
-                        FitnessFunctionId = t.FitnessFunctionId,
-                        Progress = t.Progress
-                    })
-                    .ToList();
+                List<string> algorithms = new();
+                List<string> fitnessFunctions = new();
+                foreach (var algorithmId in session.AlgorithmIds)
+                {
+                    algorithms.Add(dbContext.Algorithms.FirstOrDefault(a => a.Id == algorithmId).Name);
+                }
+                foreach (var functionId in session.FitnessFunctionIds)
+                {
+                    fitnessFunctions.Add(dbContext.FitnessFunctions.FirstOrDefault(f => f.Id == functionId).Name);
+                }
 
-                var pausedSessionDto = new SessionDto
+
+                var sessionDto = new SessionDto
                 {
                     SessionId = session.Id,
-                    Tests = testsForSession,
+                    Algorithms = algorithms,
+                    FitnessFunctions = fitnessFunctions,
                     State = session.State,
                 };
 
-                sessionDtos.Add(pausedSessionDto);
+                sessionDtos.Add(sessionDto);
             }
 
             return sessionDtos;
