@@ -45,7 +45,7 @@ namespace Metaheuristic_system.Controllers
         public ActionResult AddAlgorithm([FromForm] string algorithmName, [FromForm] IFormFile file)
         {
             int id = algorithmService.AddAlgorithm(algorithmName, file);
-            return Created($"/api/algorithm/{id}", null);
+            return Ok(id);
         }
     }
 }

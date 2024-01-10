@@ -54,7 +54,7 @@ namespace Metaheuristic_system.Controllers
         public ActionResult AddFitnessFunction([FromBody] FitnessFunctionDto newFitnessFunctionDto)
         {
             int id = fitnessFunctionService.AddFitnessFunction(newFitnessFunctionDto);
-            return Created($"/api/fitnessFunction/{id}", null);
+            return Ok(id);
         }
     }
 }

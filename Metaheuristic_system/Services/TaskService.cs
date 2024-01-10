@@ -456,12 +456,20 @@ namespace Metaheuristic_system.Services
             if (domainArray == null || domainArray.GetLength(0) == 0 || domainArray.GetLength(1) == 0)
             {
                 domainArray = new double[dimension, 2];
-                for (int i = 0; i < dimension; i++)
+            }
+            for (int i = 0; i < dimension; i++)
+            {
+                if (domainArray[i, 0] == null)
                 {
                     domainArray[i, 0] = -1000000;
+                }
+
+                if (domainArray[i, 1] == null)
+                {
                     domainArray[i, 1] = 1000000;
                 }
             }
+            
             return domainArray;
         }
         private double[] InitializeAlgorithmParams(dynamic paramsData, int sessionId, int algorithmId, int functionId, SystemDbContext dbContext, bool resume)
