@@ -43,13 +43,15 @@ namespace Metaheuristic_system.Services
             {
                 List<string> algorithms = new();
                 List<string> fitnessFunctions = new();
-                foreach(var algorithmId in session.AlgorithmIds)
+                string[] algorithmIDs = session.AlgorithmIds.Split(";");
+                string[] functionIDs = session.FitnessFunctionIds.Split(";");
+                foreach(var algorithmId in algorithmIDs)
                 {
-                    algorithms.Add(dbContext.Algorithms.FirstOrDefault(a => a.Id == algorithmId).Name);
+                    algorithms.Add(dbContext.Algorithms.FirstOrDefault(a => a.Id == int.Parse(algorithmId)).Name);
                 }
-                foreach(var functionId in session.FitnessFunctionIds)
+                foreach(var functionId in functionIDs)
                 {
-                    fitnessFunctions.Add(dbContext.FitnessFunctions.FirstOrDefault(f => f.Id == functionId).Name);
+                    fitnessFunctions.Add(dbContext.FitnessFunctions.FirstOrDefault(f => f.Id == int.Parse(functionId)).Name);
                 }
 
                 var sessionDto = new SessionDto
