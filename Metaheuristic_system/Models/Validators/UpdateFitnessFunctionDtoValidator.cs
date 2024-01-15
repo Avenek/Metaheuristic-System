@@ -5,19 +5,11 @@ namespace Metaheuristic_system.Models.Validators
 {
     public class UpdateFitnessFunctionDtoValidator : AbstractValidator<UpdateFitnessFunctionDto>
     {
-        public UpdateFitnessFunctionDtoValidator(SystemDbContext dbContext)
+        public UpdateFitnessFunctionDtoValidator()
         {
             RuleFor(x => x.Name)
                .NotEmpty()
-               .MaximumLength(30)
-               .Custom((value, context) =>
-               {
-                   var nameInUse = dbContext.FitnessFunctions.Any(a => a.Name == value);
-                   if (nameInUse)
-                   {
-                       context.AddFailure("Name", "Ta nazwa jest już zajęta.");
-                   }
-               });
+               .MaximumLength(30);
 
             RuleFor(x => x.Dimension)
                 .Custom((value, context) =>
