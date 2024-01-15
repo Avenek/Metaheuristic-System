@@ -210,7 +210,7 @@ namespace Metaheuristic_system.Services
             var aTypes = fileLoader.file.GetTypes();
             var functionType = aTypes.FirstOrDefault(type =>
                 type.GetInterfaces().Any(interfaceType =>
-                ReflectionValidator.ImplementsInterface(interfaceType, typeof(IFitnessFunction))
+                ReflectionValidator.ImplementsInterface(interfaceType, typeof(IFitnessFunction)) && type.Name == fitnessFunction.Name
                 ));
             Dictionary<int, Type> algorithmTypes = GetSelectedAlgorithmsType(selectedAlgorithms, algorithmPath);
 
@@ -441,12 +441,20 @@ namespace Metaheuristic_system.Services
             if (domainArray == null || domainArray.GetLength(0) == 0 || domainArray.GetLength(1) == 0)
             {
                 domainArray = new double[dimension, 2];
-                for (int i = 0; i < dimension; i++)
+            }
+            for (int i = 0; i < dimension; i++)
+            {
+                if (domainArray[i, 0] == null)
                 {
                     domainArray[i, 0] = -1000000;
+                }
+
+                if (domainArray[i, 1] == null)
+                {
                     domainArray[i, 1] = 1000000;
                 }
             }
+
             return domainArray;
         }
         private double[,] GetFunctionDomain(FitnessFunction function, int dimension)
