@@ -64,7 +64,7 @@ namespace Metaheuristic_system.Services
                 if (!resume)
                 {
 
-                    session = new() { AlgorithmIds = id.ToString(), FitnessFunctionIds = String.Join(";", fitnessFunctionIds), State = "RUNNING" };
+                    session = new() { AlgorithmIds = id.ToString(), FitnessFunctionIds = String.Join(";", fitnessFunctionIds), State = "RUNNING", IsAlgorithmTested = true};
                     dbContext.Sessions.Add(session);
                 }
                 else
@@ -220,7 +220,7 @@ namespace Metaheuristic_system.Services
                 Sessions session;
                 if (!resume)
                 {
-                    session = new() { AlgorithmIds = String.Join(";", algorithmIds), FitnessFunctionIds = id.ToString(), State = "RUNNING" };
+                    session = new() { AlgorithmIds = String.Join(";", algorithmIds), FitnessFunctionIds = id.ToString(), State = "RUNNING", IsAlgorithmTested = false };
                     dbContext.Sessions.Add(session);
                     dbContext.SaveChanges();
                     sessionId = session.Id;
@@ -364,6 +364,7 @@ namespace Metaheuristic_system.Services
                 double[,] domainArray = GetFunctionDomain(function, (int)paramsValue[dimensionIndex]);
                 for (int iter = 0; iter < 10; iter++)
                 {
+                    if (cancellationToken.IsCancellationRequested) return null;
                     optimizationAlgorithm.Solve(fitnessFunction, domainArray, paramsValue, resume);
                     AlgorithmBestParameters iterParams = new(optimizationAlgorithm.XBest, optimizationAlgorithm.FBest, paramsValue);
                     bestIter.Add(iterParams);

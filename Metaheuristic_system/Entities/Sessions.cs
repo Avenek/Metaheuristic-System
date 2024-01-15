@@ -13,6 +13,9 @@ namespace Metaheuristic_system.Entities
         [Required]
         public string State { get; set; }
 
+        [Required]
+        public bool IsAlgorithmTested { get; set; }
+
         public virtual List<Tests> Tests { get; set; }
     }
 

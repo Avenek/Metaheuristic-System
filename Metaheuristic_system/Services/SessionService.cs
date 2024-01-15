@@ -60,6 +60,7 @@ namespace Metaheuristic_system.Services
                     Algorithms = algorithms,
                     FitnessFunctions = fitnessFunctions,
                     State = session.State,
+                    IsAlgorithmTested = session.IsAlgorithmTested,
                 };
 
                 sessionDtos.Add(sessionDto);
@@ -95,6 +96,7 @@ namespace Metaheuristic_system.Services
                     Algorithms = algorithms,
                     FitnessFunctions = fitnessFunctions,
                     State = session.State,
+                    IsAlgorithmTested = session.IsAlgorithmTested,
                 };
 
                 sessionDtos.Add(sessionDto);
