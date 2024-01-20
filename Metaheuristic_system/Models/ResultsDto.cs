@@ -9,5 +9,7 @@
 
         public double FBest { get; set; }
         public double[] XBest {  get; set; }
+
+        public int NumberOfEvaluationFitnessFunction { get; set; }
     }
 }

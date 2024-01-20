@@ -366,7 +366,7 @@ namespace Metaheuristic_system.Services
                 {
                     if (cancellationToken.IsCancellationRequested) return null;
                     optimizationAlgorithm.Solve(fitnessFunction, domainArray, paramsValue, resume);
-                    AlgorithmBestParameters iterParams = new(optimizationAlgorithm.XBest, optimizationAlgorithm.FBest, paramsValue);
+                    AlgorithmBestParameters iterParams = new(optimizationAlgorithm.XBest, optimizationAlgorithm.FBest, paramsValue, optimizationAlgorithm.NumberOfEvaluationFitnessFunction);
                     bestIter.Add(iterParams);
                 }
                 AlgorithmBestParameters currentParams = bestIter.OrderBy(param => param.FBest).First();
@@ -376,7 +376,7 @@ namespace Metaheuristic_system.Services
                 {
                     resultsDict[paramsData[i].Name] = currentParams.BestParams[i];
                 }
-                TestResults testResults = new() { TestId = tests.Id, XBest = String.Join(';', optimizationAlgorithm.XBest), FBest = optimizationAlgorithm.FBest, Parameters = JsonConvert.SerializeObject(resultsDict) };
+                TestResults testResults = new() { TestId = tests.Id, XBest = String.Join(';', currentParams.XBest), FBest = currentParams.FBest, NumberOfEvaluationFitnessFunction = currentParams.NumberOfEvaluationFitnessFunction, Parameters = JsonConvert.SerializeObject(resultsDict) };
                 dbContext.TestResults.Add(testResults);
                 double progress = prepareDimension is null ?  iteration / Math.Pow(5, paramsValue.Length) : iteration / Math.Pow(5, paramsValue.Length - 1);
                 tests.Progress = progress;

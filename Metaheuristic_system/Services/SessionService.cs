@@ -220,8 +220,12 @@ namespace Metaheuristic_system.Services
                             .Take(5)
                             .ToList();
 
+
+
                         foreach (var result in topResultsForDimension)
                         {
+                            document.Add(new Paragraph($"Liczba wywołań funkcji celu: {result.NumberOfEvaluationFitnessFunction}"));
+                            document.Add(new Paragraph(""));
                             var parameters = JsonConvert.DeserializeObject<Dictionary<string, double>>(result.Parameters);
                             PdfPTable table = new PdfPTable(parameters.Keys.Count);
                             foreach (var key in parameters.Keys)
