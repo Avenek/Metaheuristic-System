@@ -378,13 +378,16 @@ namespace Metaheuristic_system.Services
                 }
                 TestResults testResults = new() { TestId = tests.Id, XBest = String.Join(';', optimizationAlgorithm.XBest), FBest = optimizationAlgorithm.FBest, Parameters = JsonConvert.SerializeObject(resultsDict) };
                 dbContext.TestResults.Add(testResults);
-                double progress = iteration / Math.Pow(5, paramsValue.Length);
+                double progress = prepareDimension is null ?  iteration / Math.Pow(5, paramsValue.Length) : iteration / Math.Pow(5, paramsValue.Length - 1);
                 tests.Progress = progress;
                 dbContext.SaveChanges();
                 iteration++;
                 paramsValue = IncreaseParams(paramsValue, paramsData, dimensionIndex);
                 if (paramsValue[0] > paramsData[0].UpperBoundary)
                 {
+                    progress = 1;
+                    tests.Progress = progress;
+                    dbContext.SaveChanges();
                     break;
                 }
             }
