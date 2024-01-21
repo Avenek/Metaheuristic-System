@@ -361,7 +361,7 @@ namespace Metaheuristic_system.Services
                 if (cancellationToken.IsCancellationRequested) break;
                 List<AlgorithmBestParameters> bestIter = new();
                 
-                double[,] domainArray = GetFunctionDomain(function, (int)paramsValue[dimensionIndex]);
+                double[,] domainArray = GetFunctionDomain(function, (int)paramsValue[dimensionIndex], prepareDimension is null);
                 for (int iter = 0; iter < 10; iter++)
                 {
                     if (cancellationToken.IsCancellationRequested) return null;
@@ -436,52 +436,40 @@ namespace Metaheuristic_system.Services
 
             return paramsValue;
         }
-
-        private double[,] GetFunctionDomain(Type functionType, List<FitnessFunction> selectedFunctions, int dimension)
-        {
-            FitnessFunction function = selectedFunctions.FirstOrDefault(f => f.Name == functionType.Name);
-            string domain = function.Domain;
-            double[,] domainArray = JsonConvert.DeserializeObject<double[,]>(domain);
-            if (domainArray == null || domainArray.GetLength(0) == 0 || domainArray.GetLength(1) == 0)
-            {
-                domainArray = new double[dimension, 2];
-            }
-            for (int i = 0; i < dimension; i++)
-            {
-                if (domainArray[i, 0] == null)
-                {
-                    domainArray[i, 0] = -1000000;
-                }
-
-                if (domainArray[i, 1] == null)
-                {
-                    domainArray[i, 1] = 1000000;
-                }
-            }
-
-            return domainArray;
-        }
-        private double[,] GetFunctionDomain(FitnessFunction function, int dimension)
+        private double[,] GetFunctionDomain(FitnessFunction function, int dimension, bool isDimensionNull)
         {
             string domain = function.Domain;
             double[,] domainArray = JsonConvert.DeserializeObject<double[,]>(domain);
-            if (domainArray == null || domainArray.GetLength(0) == 0 || domainArray.GetLength(1) == 0)
+            if(isDimensionNull && domainArray.GetLength(0) == 1 && domainArray.GetLength(1) == 2) 
             {
+                double min = domainArray[0, 0];
+                double max = domainArray[0, 1];
                 domainArray = new double[dimension, 2];
+                for (int i = 0; i < dimension; i++)
+                {
+                    domainArray[i, 0] = min;
+                    domainArray[i, 1] = max;
+                }
             }
-            for (int i = 0; i < dimension; i++)
+            else
             {
-                if (domainArray[i, 0] == null)
+                if (domainArray == null || domainArray.GetLength(0) == 0 || domainArray.GetLength(1) == 0)
                 {
-                    domainArray[i, 0] = -1000000;
+                    domainArray = new double[dimension, 2];
                 }
-
-                if (domainArray[i, 1] == null)
+                for (int i = 0; i < dimension; i++)
                 {
-                    domainArray[i, 1] = 1000000;
+                    if (domainArray[i, 0] == null)
+                    {
+                        domainArray[i, 0] = -1000000;
+                    }
+
+                    if (domainArray[i, 1] == null)
+                    {
+                        domainArray[i, 1] = 1000000;
+                    }
                 }
             }
-            
             return domainArray;
         }
         private double[] InitializeAlgorithmParams(dynamic paramsData, int sessionId, int algorithmId, int functionId, SystemDbContext dbContext, bool resume)

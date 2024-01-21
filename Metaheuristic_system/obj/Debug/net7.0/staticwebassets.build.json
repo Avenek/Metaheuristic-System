@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "sgZ0oreCP8xJmibmJRLnQgtr29393NvaHvH+6vHllxo=",
+  "Hash": "eolJtQAVknae4SRnZXIbDPX8YiWQFLK359fGvFHYnhM=",
   "Source": "Metaheuristic_system",
   "BasePath": "_content/Metaheuristic_system",
   "Mode": "Default",
@@ -10,17 +10,17 @@
     {
       "Name": "Metaheuristic_system\\wwwroot",
       "Source": "Metaheuristic_system",
-      "ContentRoot": "C:\\Users\\Jakub\\Desktop\\Programowanie\\Metaheuristic_system\\Metaheuristic_system\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Jakub\\Desktop\\Programowanie\\Metaheuristic_System\\Metaheuristic_system\\wwwroot\\",
       "BasePath": "_content/Metaheuristic_system",
       "Pattern": "**"
     }
   ],
   "Assets": [
     {
-      "Identity": "C:\\Users\\Jakub\\Desktop\\Programowanie\\Metaheuristic_system\\Metaheuristic_system\\wwwroot\\10.pdf",
+      "Identity": "C:\\Users\\Jakub\\Desktop\\Programowanie\\Metaheuristic_System\\Metaheuristic_system\\wwwroot\\10.pdf",
       "SourceId": "Metaheuristic_system",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Jakub\\Desktop\\Programowanie\\Metaheuristic_system\\Metaheuristic_system\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Jakub\\Desktop\\Programowanie\\Metaheuristic_System\\Metaheuristic_system\\wwwroot\\",
       "BasePath": "_content/Metaheuristic_system",
       "RelativePath": "10.pdf",
       "AssetKind": "All",
@@ -36,10 +36,10 @@
       "OriginalItemSpec": "wwwroot\\10.pdf"
     },
     {
-      "Identity": "C:\\Users\\Jakub\\Desktop\\Programowanie\\Metaheuristic_system\\Metaheuristic_system\\wwwroot\\4.pdf",
+      "Identity": "C:\\Users\\Jakub\\Desktop\\Programowanie\\Metaheuristic_System\\Metaheuristic_system\\wwwroot\\4.pdf",
       "SourceId": "Metaheuristic_system",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Jakub\\Desktop\\Programowanie\\Metaheuristic_system\\Metaheuristic_system\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Jakub\\Desktop\\Programowanie\\Metaheuristic_System\\Metaheuristic_system\\wwwroot\\",
       "BasePath": "_content/Metaheuristic_system",
       "RelativePath": "4.pdf",
       "AssetKind": "All",
@@ -55,10 +55,10 @@
       "OriginalItemSpec": "wwwroot\\4.pdf"
     },
     {
-      "Identity": "C:\\Users\\Jakub\\Desktop\\Programowanie\\Metaheuristic_system\\Metaheuristic_system\\wwwroot\\5.pdf",
+      "Identity": "C:\\Users\\Jakub\\Desktop\\Programowanie\\Metaheuristic_System\\Metaheuristic_system\\wwwroot\\5.pdf",
       "SourceId": "Metaheuristic_system",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Jakub\\Desktop\\Programowanie\\Metaheuristic_system\\Metaheuristic_system\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Jakub\\Desktop\\Programowanie\\Metaheuristic_System\\Metaheuristic_system\\wwwroot\\",
       "BasePath": "_content/Metaheuristic_system",
       "RelativePath": "5.pdf",
       "AssetKind": "All",
@@ -74,10 +74,10 @@
       "OriginalItemSpec": "wwwroot\\5.pdf"
     },
     {
-      "Identity": "C:\\Users\\Jakub\\Desktop\\Programowanie\\Metaheuristic_system\\Metaheuristic_system\\wwwroot\\7.pdf",
+      "Identity": "C:\\Users\\Jakub\\Desktop\\Programowanie\\Metaheuristic_System\\Metaheuristic_system\\wwwroot\\7.pdf",
       "SourceId": "Metaheuristic_system",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Jakub\\Desktop\\Programowanie\\Metaheuristic_system\\Metaheuristic_system\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Jakub\\Desktop\\Programowanie\\Metaheuristic_System\\Metaheuristic_system\\wwwroot\\",
       "BasePath": "_content/Metaheuristic_system",
       "RelativePath": "7.pdf",
       "AssetKind": "All",
@@ -93,10 +93,10 @@
       "OriginalItemSpec": "wwwroot\\7.pdf"
     },
     {
-      "Identity": "C:\\Users\\Jakub\\Desktop\\Programowanie\\Metaheuristic_system\\Metaheuristic_system\\wwwroot\\9.pdf",
+      "Identity": "C:\\Users\\Jakub\\Desktop\\Programowanie\\Metaheuristic_System\\Metaheuristic_system\\wwwroot\\9.pdf",
       "SourceId": "Metaheuristic_system",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Jakub\\Desktop\\Programowanie\\Metaheuristic_system\\Metaheuristic_system\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Jakub\\Desktop\\Programowanie\\Metaheuristic_System\\Metaheuristic_system\\wwwroot\\",
       "BasePath": "_content/Metaheuristic_system",
       "RelativePath": "9.pdf",
       "AssetKind": "All",

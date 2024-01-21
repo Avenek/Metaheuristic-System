@@ -16,7 +16,7 @@ namespace Metaheuristic_system.Seeders
             {
                 if (!dbContext.FitnessFunctions.Any())
                 {
-                    FitnessFunction fitnessFunction = new FitnessFunction() { Name = "Rastrigin", Dimension = 0, Domain = "[]", FileName = "CHOA.dll", Removeable = false };
+                    FitnessFunction fitnessFunction = new FitnessFunction() { Name = "Rastrigin", Dimension = null, Domain = "[]", FileName = "CHOA.dll", Removeable = false };
                     dbContext.FitnessFunctions.Add(fitnessFunction);
                     dbContext.SaveChanges();
                 }
