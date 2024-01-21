@@ -9,7 +9,7 @@ namespace Metaheuristic_system.Models.Validators
         {
             RuleFor(x => x.Name)
                 .NotEmpty()
-                .MaximumLength(30)
+                .MaximumLength(50)
                 .Custom((value, context) =>
                  {
                      var nameInUse = dbContext.FitnessFunctions.Any(a => a.Name == value);
@@ -21,7 +21,7 @@ namespace Metaheuristic_system.Models.Validators
 
             RuleFor(x => x.FileName)
                 .NotEmpty()
-                .MaximumLength(30);
+                .MaximumLength(50);
 
             RuleFor(x => x.Dimension)
                 .Custom((value, context) =>

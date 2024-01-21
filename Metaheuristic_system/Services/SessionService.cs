@@ -47,11 +47,27 @@ namespace Metaheuristic_system.Services
                 string[] functionIDs = session.FitnessFunctionIds.Split(";");
                 foreach(var algorithmId in algorithmIDs)
                 {
-                    algorithms.Add(dbContext.Algorithms.FirstOrDefault(a => a.Id == int.Parse(algorithmId)).Name);
+                    try 
+                    {
+                        algorithms.Add(dbContext.Algorithms.FirstOrDefault(a => a.Id == int.Parse(algorithmId)).Name);
+                    }
+                    catch(Exception e)
+                    {
+                        algorithms.Add("<usunięto>");
+                    }
+
                 }
                 foreach(var functionId in functionIDs)
                 {
-                    fitnessFunctions.Add(dbContext.FitnessFunctions.FirstOrDefault(f => f.Id == int.Parse(functionId)).Name);
+                    try
+                    {
+                        fitnessFunctions.Add(dbContext.FitnessFunctions.FirstOrDefault(f => f.Id == int.Parse(functionId)).Name);
+                    }
+                    catch (Exception e)
+                    {
+                        fitnessFunctions.Add("<usunięto>");
+                    }
+
                 }
 
                 var sessionDto = new SessionDto

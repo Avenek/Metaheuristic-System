@@ -73,7 +73,7 @@ namespace Metaheuristic_system.Services
                     session.State = "RUNNING";
                 }
                 dbContext.SaveChanges();
-                                    sessionId = session.Id;
+                sessionId = session.Id;
                 List<ResultsDto> results = await PrepareDataAndInvokeTests(optimizationType, functionTypes, selectedFunctions, sessionId, id, cancellationToken, resume);
                 foreach (var result in results)
                 {

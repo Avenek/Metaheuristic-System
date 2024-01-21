@@ -87,7 +87,7 @@ namespace Metaheuristic_system.Services
 
         public void UploadFitnessFunctionFile(IFormFile file)
         {
-            if (file.FileName.Length > 30) throw new BadRequestException("Podano zbyt długą nazwę pliku.");
+            if (file.FileName.Length > 50) throw new BadRequestException("Podano zbyt długą nazwę pliku.");
             if (file == null || file.Name.Length == 0) throw new BadRequestException("Napotkano problemy z plikiem.");
             if (Path.GetExtension(file.FileName) != ".dll") throw new BadRequestException("Plik posiada złe rozszerzenie.");
             string path = "./dll/fitnessFunction";
