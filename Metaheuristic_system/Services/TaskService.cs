@@ -352,7 +352,7 @@ namespace Metaheuristic_system.Services
                 }
             }
             double[] paramsValue = InitializeAlgorithmParams(paramsData, sessionId, algorithmId, function.Id, dbContext, resume);
-            int iteration = 1;
+            int iteration = resume ? dbContext.TestResults.Count(record => record.TestId == tests.Id) : 1;
             List<AlgorithmBestParameters> bestParameters = new List<AlgorithmBestParameters>();
 
             if (dimensionIndex == -1) throw new NotFoundException("Brak parametru Dimension w ParamsInfo");
