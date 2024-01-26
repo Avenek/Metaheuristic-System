@@ -251,7 +251,7 @@ namespace Metaheuristic_system.Services
                             document.Add(new Paragraph(" "));
                             foreach (var value in parameters.Values)
                             {
-                                table.AddCell(value.ToString());
+                                table.AddCell(value.ToString("F3").TrimEnd('0').TrimEnd('.'));
                             }
                             document.Add(table);
                             document.Add(new Paragraph(" "));
@@ -260,9 +260,19 @@ namespace Metaheuristic_system.Services
                             table.AddCell("XBest");
                             table.AddCell("FBest");
 
-                            string[] xBests = result.XBest.ToString().Split(';');
+                            string xBestsString = result.XBest.ToString();
+                            string[] xBests = xBestsString.Split(';');
+
+                            for (int i = 0; i < xBests.Length; i++)
+                            {
+                                if (double.TryParse(xBests[i], out double xBestDouble))
+                                {
+                                    xBests[i] = xBestDouble.ToString("F3").TrimEnd('0').TrimEnd('.');
+                                }
+                            }
+
                             table.AddCell(String.Join(";\n", xBests));
-                            table.AddCell(result.FBest.ToString());
+                            table.AddCell(result.FBest.ToString("F3").TrimEnd('0').TrimEnd('.'));
 
 
                             document.Add(table);

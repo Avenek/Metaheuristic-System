@@ -8,7 +8,8 @@ namespace Metaheuristic_system.MappingProfiles
     {
         public TestMappingProfile()
         {
-            CreateMap<Tests, TestsDto>();
+            CreateMap<Tests, TestsDto>()
+                .ForMember(dest => dest.Progress, opt => opt.MapFrom(src => Math.Round(src.Progress, 5)));
         }
     }
 }
