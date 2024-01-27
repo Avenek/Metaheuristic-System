@@ -381,6 +381,7 @@ namespace Metaheuristic_system.Services
                 double progress = prepareDimension is null ?  iteration / Math.Pow(5, paramsValue.Length) : iteration / Math.Pow(5, paramsValue.Length - 1);
                 tests.Progress = progress;
                 dbContext.SaveChanges();
+                optimizationAlgorithm.NumberOfEvaluationFitnessFunction = 0;
                 iteration++;
                 paramsValue = IncreaseParams(paramsValue, paramsData, dimensionIndex);
                 if (paramsValue[0] > paramsData[0].UpperBoundary)
@@ -456,19 +457,28 @@ namespace Metaheuristic_system.Services
                 if (domainArray == null || domainArray.GetLength(0) == 0 || domainArray.GetLength(1) == 0)
                 {
                     domainArray = new double[dimension, 2];
+                    for (int i = 0; i < dimension; i++)
+                    {
+                         domainArray[i, 0] = -1000000;
+                         domainArray[i, 1] = 1000000;
+                    }
                 }
-                for (int i = 0; i < dimension; i++)
+                else
                 {
-                    if (domainArray[i, 0] == null)
+                    for (int i = 0; i < dimension; i++)
                     {
-                        domainArray[i, 0] = -1000000;
-                    }
+                        if (domainArray[i, 0] == null)
+                        {
+                            domainArray[i, 0] = -1000000;
+                        }
 
-                    if (domainArray[i, 1] == null)
-                    {
-                        domainArray[i, 1] = 1000000;
+                        if (domainArray[i, 1] == null)
+                        {
+                            domainArray[i, 1] = 1000000;
+                        }
                     }
                 }
+
             }
             return domainArray;
         }

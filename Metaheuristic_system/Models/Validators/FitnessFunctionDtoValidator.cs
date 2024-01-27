@@ -19,10 +19,6 @@ namespace Metaheuristic_system.Models.Validators
                      }
                  });
 
-            RuleFor(x => x.FileName)
-                .NotEmpty()
-                .MaximumLength(50);
-
             RuleFor(x => x.Dimension)
                 .Custom((value, context) =>
                 {
