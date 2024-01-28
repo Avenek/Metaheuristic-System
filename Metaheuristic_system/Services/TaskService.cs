@@ -130,9 +130,8 @@ namespace Metaheuristic_system.Services
                             
                             if (cancellationToken.IsCancellationRequested) return;
                             dynamic paramsData = optimizationAlgorithm.ParamsInfo;
-                            dynamic fitnessFunction = Activator.CreateInstance(functionTypes[f]);
                             var function = dbContext.FitnessFunctions.FirstOrDefault(function => function.Id == f);
-                            ResultsDto bestResult = await InvokeTest(optimizationAlgorithm, fitnessFunction, tests, sessionId, algorithmId, function, cancellationToken, resume, dbContext);
+                            ResultsDto bestResult = await InvokeTest(optimizationAlgorithm, algorithmType, functionTypes[f], tests, sessionId, algorithmId, function, cancellationToken, resume, dbContext);
                             bestResult.SessionId = sessionId;
                             bestResult.FitnessFunctionId = f;
                             results.Add(bestResult);
@@ -278,7 +277,7 @@ namespace Metaheuristic_system.Services
                             if (cancellationToken.IsCancellationRequested) return;
                             dynamic optimizationAlgorithm = Activator.CreateInstance(algorithmTypes[a]);
                             dynamic paramsData = optimizationAlgorithm.ParamsInfo;
-                            ResultsDto bestResult = await InvokeTest(optimizationAlgorithm, functionInstance, tests, sessionId, a, fitnessFunction, cancellationToken, resume, dbContext);
+                            ResultsDto bestResult = await InvokeTest(optimizationAlgorithm, algorithmTypes[a], functionInstance, tests, sessionId, a, fitnessFunction, cancellationToken, resume, dbContext);
                             bestResult.SessionId = sessionId;
                             bestResult.AlgorithmId = a;
                             results.Add(bestResult);
@@ -320,7 +319,7 @@ namespace Metaheuristic_system.Services
         }
 
         #endregion
-        private ResultsDto InvokeTest(dynamic optimizationAlgorithm, dynamic fitnessFunction, Tests tests, int sessionId, int algorithmId, FitnessFunction function, CancellationToken cancellationToken, bool resume, SystemDbContext dbContext)
+        private ResultsDto InvokeTest(dynamic optimizationAlgorithm, Type optimizationType, Type fitnessFunctionType, Tests tests, int sessionId, int algorithmId, FitnessFunction function, CancellationToken cancellationToken, bool resume, SystemDbContext dbContext)
         {
             dynamic paramsData = optimizationAlgorithm.ParamsInfo;
             int? prepareDimension = function.Dimension;
@@ -362,11 +361,13 @@ namespace Metaheuristic_system.Services
                 List<AlgorithmBestParameters> bestIter = new();
                 
                 double[,] domainArray = GetFunctionDomain(function, (int)paramsValue[dimensionIndex], prepareDimension is null);
-                for (int iter = 0; iter < 10; iter++)
+                for (int iter = 0; iter < 3; iter++)
                 {
                     if (cancellationToken.IsCancellationRequested) return null;
-                    optimizationAlgorithm.Solve(fitnessFunction, domainArray, paramsValue, resume);
-                    AlgorithmBestParameters iterParams = new(optimizationAlgorithm.XBest, optimizationAlgorithm.FBest, paramsValue, optimizationAlgorithm.NumberOfEvaluationFitnessFunction);
+                    dynamic fitnessFunction = Activator.CreateInstance(fitnessFunctionType);
+                    dynamic algorithm = Activator.CreateInstance(optimizationType);
+                    algorithm.Solve(fitnessFunction, domainArray, paramsValue, resume);
+                    AlgorithmBestParameters iterParams = new(algorithm.XBest, algorithm.FBest, paramsValue, algorithm.NumberOfEvaluationFitnessFunction);
                     bestIter.Add(iterParams);
                 }
                 AlgorithmBestParameters currentParams = bestIter.OrderBy(param => param.FBest).First();
@@ -381,7 +382,6 @@ namespace Metaheuristic_system.Services
                 double progress = prepareDimension is null ?  iteration / Math.Pow(5, paramsValue.Length) : iteration / Math.Pow(5, paramsValue.Length - 1);
                 tests.Progress = progress;
                 dbContext.SaveChanges();
-                optimizationAlgorithm.NumberOfEvaluationFitnessFunction = 0;
                 iteration++;
                 paramsValue = IncreaseParams(paramsValue, paramsData, dimensionIndex);
                 if (paramsValue[0] > paramsData[0].UpperBoundary)
