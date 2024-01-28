@@ -160,20 +160,20 @@ namespace Metaheuristic_system.Services
             {
                 var document = new Document();
                 PdfWriter.GetInstance(document, new FileStream(fullFilePath, FileMode.Create));
-                var process = new Process
-                {
-                    StartInfo = new ProcessStartInfo
-                    {
-                        FileName = "chmod",
-                        Arguments = $"a+rw {fullFilePath}",
-                        RedirectStandardOutput = true,
-                        UseShellExecute = false,
-                        CreateNoWindow = true
-                    }
-                };
+                //var process = new Process
+                //{
+                //    StartInfo = new ProcessStartInfo
+                //    {
+                //        FileName = "chmod",
+                //        Arguments = $"a+rw {fullFilePath}",
+                //        RedirectStandardOutput = true,
+                //        UseShellExecute = false,
+                //        CreateNoWindow = true
+                //    }
+                //};
 
-                process.Start();
-                process.WaitForExit();
+                //process.Start();
+                //process.WaitForExit();
                 document.Open();
                 document.Add(new Paragraph($"Wyniki testu dla sesji: {id}"));
                 document.Add(new Paragraph(" "));
@@ -240,7 +240,7 @@ namespace Metaheuristic_system.Services
 
                         foreach (var result in topResultsForDimension)
                         {
-                            document.Add(new Paragraph($"Liczba wywołań funkcji celu: {result.NumberOfEvaluationFitnessFunction}"));
+                            document.Add(new Paragraph($"Liczba wywolan funkcji celu: {result.NumberOfEvaluationFitnessFunction}"));
                             document.Add(new Paragraph(""));
                             var parameters = JsonConvert.DeserializeObject<Dictionary<string, double>>(result.Parameters);
                             PdfPTable table = new PdfPTable(parameters.Keys.Count);
@@ -265,6 +265,7 @@ namespace Metaheuristic_system.Services
 
                             for (int i = 0; i < xBests.Length; i++)
                             {
+                                xBests[i] = xBests[i].Replace('.', ',');
                                 if (double.TryParse(xBests[i], out double xBestDouble))
                                 {
                                     xBests[i] = xBestDouble.ToString("F3").TrimEnd('0').TrimEnd('.');

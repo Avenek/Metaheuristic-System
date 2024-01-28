@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "mdIUyrdHo0qpXr7AjEFdIbFdQPI7slDRCpSXrzLU66I=",
+  "Hash": "mtTT/huXUBwHZk30oDp6EUczidM+PMXFR9GoPBbNN3U=",
   "Source": "Metaheuristic_system",
   "BasePath": "_content/Metaheuristic_system",
   "Mode": "Default",
@@ -15,5 +15,25 @@
       "Pattern": "**"
     }
   ],
-  "Assets": []
+  "Assets": [
+    {
+      "Identity": "C:\\Users\\Jakub\\Desktop\\Programowanie\\Metaheuristic_system\\Metaheuristic_system\\wwwroot\\20.pdf",
+      "SourceId": "Metaheuristic_system",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Jakub\\Desktop\\Programowanie\\Metaheuristic_system\\Metaheuristic_system\\wwwroot\\",
+      "BasePath": "_content/Metaheuristic_system",
+      "RelativePath": "20.pdf",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\20.pdf"
+    }
+  ]
 }

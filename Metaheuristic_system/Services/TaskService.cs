@@ -361,7 +361,7 @@ namespace Metaheuristic_system.Services
                 List<AlgorithmBestParameters> bestIter = new();
                 
                 double[,] domainArray = GetFunctionDomain(function, (int)paramsValue[dimensionIndex], prepareDimension is null);
-                for (int iter = 0; iter < 3; iter++)
+                for (int iter = 0; iter < 2; iter++)
                 {
                     if (cancellationToken.IsCancellationRequested) return null;
                     dynamic fitnessFunction = Activator.CreateInstance(fitnessFunctionType);
